@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+	<!-- targetRuntime：设置自动生成的版本 Mybatis3Simple:简单版 Mybatis3:豪华版 -->
+	<context id="DB2Tables" targetRuntime="Mybatis3">
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/diandian"
+			userId="root" password="tuyang1129">
+		</jdbcConnection>
+
+		<!-- 选配 -->
+		<!-- <javaTypeResolver > <property name="forceBigDecimals" value="false" 
+			/> </javaTypeResolver> -->
+
+		<!-- 配置POJO的生成策略 -->
+		<javaModelGenerator
+			targetPackage="com.diandian.model"
+			targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- 配置Mapper映射文件的生成策略 -->
+		<sqlMapGenerator targetPackage="com.diandian.dao"
+			targetProject=".\src\main\resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 配置Mapper接口的生成策略 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.diandian.dao" targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!-- 根据表明逆向分享，生成的对应的类 -->
+		<table schema="" tableName="lists" domainObjectName="Lists"></table>
+		<table schema="" tableName="room" domainObjectName="Room"></table>
+		<table schema="" tableName="roomdetail" domainObjectName="Roomdetail"></table>
+		<table schema="" tableName="user" domainObjectName="User"></table>
+		<table schema="" tableName="userdetail" domainObjectName="Userdetail"></table>
+
+	</context>
+</generatorConfiguration>
