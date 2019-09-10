@@ -8,6 +8,8 @@
 	</settings>
 	
 	<typeAliases>
+		<package name="com.diandian.model" />
+		<package name="com.diandian.model.custom" />
 	</typeAliases>
 
 

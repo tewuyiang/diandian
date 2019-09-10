@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.diandian.dao.custom.ListsCustomMapper">
+
+
+	<resultMap id="selectUserByRoomIdMap" type="UserCustom">
+		<id column="id" property="id" />
+		<result column="wxid" property="wxid"/>
+		<result column="nickname" property="nickname"/>
+		<result column="sex" property="sex"/>
+		<result column="age" property="age"/>
+		<association property="lists" javaType="Lists">
+			<id column="listid" property="id"></id>
+			<result column="remarkname" property="remarkname"/>
+			<result column="roomid" property="roomid"/>
+			<result column="statu" property="statu"/>
+		</association>
+	</resultMap>
+    <select id="selectUserByRoomId" parameterType="Integer" resultMap="selectUserByRoomIdMap">
+        select user.*,
+			 lists.id listid,
+			 lists.remarkname,
+			 lists.roomid,
+			 lists.statu
+		from lists, user
+		where lists.roomid = 14 and
+			  lists.del = 1 and
+			  user.id = lists.userid
+    </select>
+
+</mapper>

@@ -12,19 +12,31 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 根据主键id更新用户信息
+     * @param user
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
-    @PostMapping("/update")
-    public String update(User user) throws Exception {
-        if(userService.updateByPrimaryKey(user) > 0){
+    @PostMapping("/updateUserById")
+    public String updateUserById(User user) throws Exception {
+        if(userService.updateUserById(user) > 0){
             return "success";
         }
         return "failure";
     }
 
 
+    /**
+     * 根据主键id查询用户信息
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
-    @GetMapping("/select/{id}")
-    public User selectUserById(@PathVariable("id") Integer id){
+    @GetMapping("/selectUserById/{id}")
+    public User selectUserById(@PathVariable("id") Integer id) throws Exception {
         return userService.selectUserById(id);
     }
 
