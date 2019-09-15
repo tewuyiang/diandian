@@ -51,7 +51,7 @@ public class R extends HashMap<String, Object> {
 	}
 	public static <T> R no(String ... message) {
 		R r = new R();
-		r.put("code", -1);
+		r.put("code", 0);
 		String msg = "";
 		if (message == null || message.length == 0 || StringUtils.isBlank(message[0])) {
 			msg = "数据为空";
@@ -65,7 +65,7 @@ public class R extends HashMap<String, Object> {
 
 	public static R error(String... message) {
 		R r = new R();
-		r.put("code", 0);
+		r.put("code", -1);
 		String msg = "";
 		if (message == null || message.length == 0 || StringUtils.isBlank(message[0])) {
 			msg = "请求失败！";

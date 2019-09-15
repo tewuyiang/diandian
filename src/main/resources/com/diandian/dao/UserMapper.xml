@@ -100,17 +100,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.diandian.model.User">
-    insert into user (id, wxid, nickname, 
-      sex, age)
-    values (#{id,jdbcType=INTEGER}, #{wxid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=SMALLINT}, #{age,jdbcType=INTEGER})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (wxid, nickname, sex, 
+      age)
+    values (#{wxid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=SMALLINT}, 
+      #{age,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.diandian.model.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="wxid != null">
         wxid,
       </if>
@@ -125,9 +128,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="wxid != null">
         #{wxid,jdbcType=VARCHAR},
       </if>

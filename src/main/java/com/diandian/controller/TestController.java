@@ -15,9 +15,4 @@ public class TestController {
     @Autowired
     RoomService roomService;
 
-    @ResponseBody
-    @GetMapping("/selectUserByRoomId/{roomID}")
-    public List<UserCustom> selectUserByRoomId(@PathVariable("roomID") Integer roomID) throws Exception {
-        return roomService.selectUserByRoomId(roomID);
-    }
 }

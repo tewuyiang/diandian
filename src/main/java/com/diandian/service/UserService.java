@@ -1,7 +1,10 @@
 package com.diandian.service;
 
 import com.diandian.model.User;
+import com.diandian.model.custom.RoomCustom;
 import com.diandian.model.custom.UserCustom;
+
+import java.util.List;
 
 
 public interface UserService {
@@ -37,4 +40,20 @@ public interface UserService {
      * @return
      */
     UserCustom getUserByOpenid(String openid) throws Exception;
+
+
+    /**
+     * 根据userid查询用户创建的所有房间
+     * @param userid
+     * @return
+     */
+    List<RoomCustom> selectRoomsByUserId(Integer userid) throws Exception;
+
+
+    /**
+     * 根据userid查询用户加入的所有房间
+     * @param userId
+     * @return
+     */
+    List<RoomCustom> selectJoinRoomsByUserId(Integer userId) throws Exception;
 }

@@ -3,6 +3,10 @@
 <mapper namespace="com.diandian.dao.custom.ListsCustomMapper">
 
 
+	<sql id="Base_Column_List">
+		<include refid="com.diandian.dao.ListsMapper.Base_Column_List" />
+	</sql>
+
 	<resultMap id="selectUserByRoomIdMap" type="UserCustom">
 		<id column="id" property="id" />
 		<result column="wxid" property="wxid"/>
@@ -16,14 +20,14 @@
 			<result column="statu" property="statu"/>
 		</association>
 	</resultMap>
-    <select id="selectUserByRoomId" parameterType="Integer" resultMap="selectUserByRoomIdMap">
+    <select id="selectUsersInRoomByRoomId" parameterType="Integer" resultMap="selectUserByRoomIdMap">
         select user.*,
 			 lists.id listid,
 			 lists.remarkname,
 			 lists.roomid,
 			 lists.statu
 		from lists, user
-		where lists.roomid = 14 and
+		where lists.roomid = #{value} and
 			  lists.del = 1 and
 			  user.id = lists.userid
     </select>

@@ -41,12 +41,24 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<!-- 根据表明逆向分享，生成的对应的类 -->
-		<table schema="" tableName="lists" domainObjectName="Lists"></table>
-		<table schema="" tableName="room" domainObjectName="Room"></table>
-		<table schema="" tableName="roomdetail" domainObjectName="Roomdetail"></table>
-		<table schema="" tableName="user" domainObjectName="User"></table>
-		<table schema="" tableName="userdetail" domainObjectName="Userdetail"></table>
+		<!-- 根据表明逆向分享，生成的对应的类
+			generatedKey配置返回自增主键
+		-->
+		<table schema="" tableName="lists" domainObjectName="Lists">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		<table schema="" tableName="room" domainObjectName="Room">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		<table schema="" tableName="roomdetail" domainObjectName="Roomdetail">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		<table schema="" tableName="user" domainObjectName="User">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		<table schema="" tableName="userdetail" domainObjectName="Userdetail">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
 
 	</context>
 </generatorConfiguration>

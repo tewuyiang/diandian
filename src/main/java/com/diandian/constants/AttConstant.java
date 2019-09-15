@@ -6,7 +6,49 @@ package com.diandian.constants;
 public interface AttConstant {
 
     /**
-     * 每次发送距离间隔的时间
+     * 每次发送距离间隔的时间，单位为秒
      */
-    double INTEVAL_TIME = 1;
+    Integer INTEVAL_TIME = 30;
+
+
+    /**
+     * 连接
+     */
+    String CONNECT = "connect";
+
+
+    /**
+     * 开始
+     */
+    String START = "start";
+
+
+    /**
+     * 结束
+     */
+    String END = "end";
+
+
+    /**
+     * 接收到的数据类型为位置
+     */
+    String LOCATION = "location";
+
+
+    /**
+     * 状态为成功
+     */
+    String SUCCESS = "success";
+
+
+    /**
+     * 状态为失败
+     */
+    String FAILURE = "failure";
+
+
+    /**
+     * 状态为错误
+     */
+    String ERROR = "error";
 }

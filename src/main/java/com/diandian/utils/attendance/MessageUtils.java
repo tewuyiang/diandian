@@ -47,4 +47,15 @@ public class MessageUtils {
         return JSONObject.parseObject(jsonStr);
     }
 
+
+    /**
+     * 将消息封装成json对象，并包含学生的id
+     * @return
+     */
+    public static <T1, T2> JSONObject messageToJson(String type, String status, T1 data, T2 studentId) {
+        JSONObject jsonObject = messageToJson(type, status, data);
+        jsonObject.put("studentId", studentId);
+        return  jsonObject;
+    }
+
 }

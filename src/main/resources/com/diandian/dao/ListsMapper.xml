@@ -101,19 +101,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.diandian.model.Lists">
-    insert into lists (id, roomid, userid, 
-      remarkname, del, statu
-      )
-    values (#{id,jdbcType=INTEGER}, #{roomid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
-      #{remarkname,jdbcType=VARCHAR}, #{del,jdbcType=SMALLINT}, #{statu,jdbcType=VARCHAR}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into lists (roomid, userid, remarkname, 
+      del, statu)
+    values (#{roomid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{remarkname,jdbcType=VARCHAR}, 
+      #{del,jdbcType=SMALLINT}, #{statu,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.diandian.model.Lists">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into lists
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="roomid != null">
         roomid,
       </if>
@@ -131,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="roomid != null">
         #{roomid,jdbcType=INTEGER},
       </if>
