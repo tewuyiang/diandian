@@ -101,6 +101,7 @@ public class RoomServiceImpl implements RoomService {
                 break;
             }
         }
+        room.setCreatetime(new Date());
         room.setRoomnumber(roomNum);
         room.setPersoncount((short)0);
         room.setDel((short)1);
@@ -178,26 +179,24 @@ public class RoomServiceImpl implements RoomService {
             throw new ParamException();
         }
 
-        // 查询用户信息
+        // 查询用户是否存在
         User user = userMapper.selectByPrimaryKey(lists.getUserid());
-        // 用户不存在
         if (user == null) return 2;
 
-        // 查询用户想要加入的房间
+        // 查询用户想要加入的房间是否存在
         RoomCustom r = roomCustomMapper.selectRoomById(lists.getRoomid());
-        // 房间不存在
         if (r == null) return 3;
 
         // 查询用户创建的所有房间
-        List<RoomCustom> rooms1 = userCustomMapper.selectRoomsByUserId(lists.getUserid());
         // 用户无法加入自己创建的房间
+        List<RoomCustom> rooms1 = userCustomMapper.selectRoomsByUserId(lists.getUserid());
         for (RoomCustom room : rooms1) {
             if (room.getId() == lists.getRoomid()) return 4;
         }
 
         // 查询用户已经加入的所有房间
-        List<RoomCustom> rooms2 = userCustomMapper.selectJoinRoomsByUserId(lists.getUserid());
         // 用户无法加入已经加入过的房间
+        List<RoomCustom> rooms2 = userCustomMapper.selectJoinRoomsByUserId(lists.getUserid());
         for (RoomCustom room : rooms2) {
             if (room.getId() == lists.getRoomid()) return 5;
         }
@@ -207,18 +206,20 @@ public class RoomServiceImpl implements RoomService {
         if ("".equals(lists.getRemarkname())) {
             lists.setRemarkname(null);
         }
-        Integer num;
 
-        // 查询lists表中是否已经有这条记录（用户之前退出过此房间，现在重新加入）
+        Integer num;
+        // 查询lists表中是否已经有这条记录（特判用户之前退出过此房间，现在重新加入）
         Lists l = listsCustomMapper.selectByRoomIdAndUserId(lists.getRoomid(), lists.getUserid());
         if (l == null) {
-            // 数据库中无此记录，直接插入数据到数据库
+            // 数据库中无此记录，直接插入一条新数据到数据库
             num = listsMapper.insertSelective(lists);
+//            System.out.println("插入一条新记录");
         } else {
-            // 之前有此数据，则将之前删除的恢复（del变为1）
+            // 之前有此数据，则将之前删除的恢复（del变为1，并修改备注）
             l.setRemarkname(lists.getRemarkname());
             l.setDel((short)1);
             num = listsMapper.updateByPrimaryKey(l);
+//            System.out.println("更新原有的记录");
         }
 
         // 加入成功
@@ -226,6 +227,7 @@ public class RoomServiceImpl implements RoomService {
             // 房间人数+1
             r.setPersoncount( (short)(r.getPersoncount()+1) );
             roomMapper.updateByPrimaryKeySelective(r);
+//            System.out.println("人数修改成功");
         }
         return num;
     }
@@ -236,7 +238,6 @@ public class RoomServiceImpl implements RoomService {
      * @param roomId 房间号
      * @param userId 用户id
      * @return
-     * @throws Exception
      */
     @Override
     public Integer deleteUserToRoom(Integer roomId, Integer userId) throws Exception {
@@ -244,21 +245,29 @@ public class RoomServiceImpl implements RoomService {
             throw new ParamException();
         }
 
-        // 查询用户信息
+        // 查询用户是否存在
         User user = userMapper.selectByPrimaryKey(userId);
-        // 用户不存在
         if (user == null) return 2;
 
-        // 查询用户想要退出的房间
+        // 查询用户想要退出的房间是否存在
         RoomCustom r = roomCustomMapper.selectRoomById(roomId);
-        // 房间不存在
         if (r == null) return 3;
 
-        Integer num = listsCustomMapper.deleteLists(roomId, userId);
-        // 退出成功
-        if (num > 0) {
-            // 更新房间人数
+        // 判断用户是否在房间中
+        Lists l = listsCustomMapper.selectByRoomIdAndUserId(roomId, userId);
+        if (null == l || l.getDel() != 1) {
+            // 用户不在房间中，或者之前在但是退出了
+            // 直接返回1，表示退出成功
+            return 1;
+        }
 
+        // 若上面的特殊情况都不符合，则直接正常更新数据库
+        Integer num = listsCustomMapper.updateListToDelete(roomId, userId);
+        if (num > 0) {
+            // 退出成功，更新房间人数
+            r.setPersoncount( (short)(r.getPersoncount()-1) );
+            roomMapper.updateByPrimaryKey(r);
+//            System.out.println("成功退出");
         }
         return num;
     }

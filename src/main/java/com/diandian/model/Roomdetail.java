@@ -1,5 +1,7 @@
 package com.diandian.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Roomdetail {
@@ -7,8 +9,10 @@ public class Roomdetail {
 
     private Integer roomid;
 
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")
     private Date begintime;
 
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")
     private Date endtime;
 
     private Integer number;

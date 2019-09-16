@@ -1,6 +1,10 @@
 package com.diandian.service;
 
 import com.diandian.model.Roomdetail;
+import com.diandian.model.custom.RoomCustom;
+import com.diandian.model.custom.RoomdetailCustom;
+
+import java.util.List;
 
 public interface RoomdetailService {
 
@@ -11,4 +15,12 @@ public interface RoomdetailService {
      * @throws Exception
      */
     Integer insertRoomdetail(Roomdetail roomdetail) throws Exception;
+
+
+    /**
+     * 根据房间id查询房间考勤明细
+     * @param roomId
+     * @return
+     */
+    List<RoomdetailCustom> selectRoomdetailByRoomId(Integer roomId) throws Exception;
 }

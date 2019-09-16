@@ -1,5 +1,7 @@
 package com.diandian.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Userdetail {
@@ -9,6 +11,7 @@ public class Userdetail {
 
     private Integer userid;
 
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")
     private Date attendtime;
 
     private String presenttime;

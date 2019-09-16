@@ -112,8 +112,8 @@ public class RoomController {
     public R userJoinRoom(Lists lists) throws Exception{
         Integer result = roomService.insertLists(lists);
         switch (result) {
-            case 0 : return R.error("加入失败！");
-            case 1 : return R.ok("加入成功！");
+            case 0 : return R.error("操作失败！");
+            case 1 : return R.ok("操作成功！");
             case 2 : return R.error("用户信息获取失败！");     // 数据库无此用户
             case 3 : return R.error("房间信息获取失败！");     // 数据库无此房间
             case 4 : return R.error("无法加入自己的房间！");    // 用户无法加入自己创建的房间
@@ -133,6 +133,13 @@ public class RoomController {
     public R userDropOutRoom(@PathVariable("roomId") Integer roomId,
                              @PathVariable("userId") Integer userId) throws Exception{
         Integer result = roomService.deleteUserToRoom(roomId, userId);
+        switch (result) {
+            case 0 : return R.error("操作失败!");
+            case 1 : return R.ok("操作成功!");
+            case 2 : return R.error("用户信息获取失败!");   // 用户不存在
+            case 3 : return R.error("房间信息获取失败!");   // 房间不存在
+        }
+        return R.error("未知错误");
     }
 
 }

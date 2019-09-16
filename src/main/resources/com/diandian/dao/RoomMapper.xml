@@ -4,12 +4,13 @@
   <resultMap id="BaseResultMap" type="com.diandian.model.Room">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="rname" jdbcType="VARCHAR" property="rname" />
+    <result column="roomnumber" jdbcType="VARCHAR" property="roomnumber" />
     <result column="userid" jdbcType="INTEGER" property="userid" />
     <result column="personcount" jdbcType="SMALLINT" property="personcount" />
     <result column="distance" jdbcType="DOUBLE" property="distance" />
     <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="del" jdbcType="SMALLINT" property="del" />
-    <result column="roomnumber" jdbcType="VARCHAR" property="roomnumber" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, rname, userid, personcount, distance, note, del, roomnumber
+    id, rname, roomnumber, userid, personcount, distance, note, del, createtime
   </sql>
   <select id="selectByExample" parameterType="com.diandian.model.RoomExample" resultMap="BaseResultMap">
     select
@@ -106,12 +107,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into room (rname, userid, personcount, 
-      distance, note, del, 
-      roomnumber)
-    values (#{rname,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{personcount,jdbcType=SMALLINT}, 
-      #{distance,jdbcType=DOUBLE}, #{note,jdbcType=VARCHAR}, #{del,jdbcType=SMALLINT}, 
-      #{roomnumber,jdbcType=VARCHAR})
+    insert into room (rname, roomnumber, userid, 
+      personcount, distance, note, 
+      del, createtime)
+    values (#{rname,jdbcType=VARCHAR}, #{roomnumber,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{personcount,jdbcType=SMALLINT}, #{distance,jdbcType=DOUBLE}, #{note,jdbcType=VARCHAR}, 
+      #{del,jdbcType=SMALLINT}, #{createtime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.diandian.model.Room">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -121,6 +122,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="rname != null">
         rname,
+      </if>
+      <if test="roomnumber != null">
+        roomnumber,
       </if>
       <if test="userid != null">
         userid,
@@ -137,13 +141,16 @@
       <if test="del != null">
         del,
       </if>
-      <if test="roomnumber != null">
-        roomnumber,
+      <if test="createtime != null">
+        createtime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="rname != null">
         #{rname,jdbcType=VARCHAR},
+      </if>
+      <if test="roomnumber != null">
+        #{roomnumber,jdbcType=VARCHAR},
       </if>
       <if test="userid != null">
         #{userid,jdbcType=INTEGER},
@@ -160,8 +167,8 @@
       <if test="del != null">
         #{del,jdbcType=SMALLINT},
       </if>
-      <if test="roomnumber != null">
-        #{roomnumber,jdbcType=VARCHAR},
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -180,6 +187,9 @@
       <if test="record.rname != null">
         rname = #{record.rname,jdbcType=VARCHAR},
       </if>
+      <if test="record.roomnumber != null">
+        roomnumber = #{record.roomnumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.userid != null">
         userid = #{record.userid,jdbcType=INTEGER},
       </if>
@@ -195,8 +205,8 @@
       <if test="record.del != null">
         del = #{record.del,jdbcType=SMALLINT},
       </if>
-      <if test="record.roomnumber != null">
-        roomnumber = #{record.roomnumber,jdbcType=VARCHAR},
+      <if test="record.createtime != null">
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -207,12 +217,13 @@
     update room
     set id = #{record.id,jdbcType=INTEGER},
       rname = #{record.rname,jdbcType=VARCHAR},
+      roomnumber = #{record.roomnumber,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=INTEGER},
       personcount = #{record.personcount,jdbcType=SMALLINT},
       distance = #{record.distance,jdbcType=DOUBLE},
       note = #{record.note,jdbcType=VARCHAR},
       del = #{record.del,jdbcType=SMALLINT},
-      roomnumber = #{record.roomnumber,jdbcType=VARCHAR}
+      createtime = #{record.createtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -222,6 +233,9 @@
     <set>
       <if test="rname != null">
         rname = #{rname,jdbcType=VARCHAR},
+      </if>
+      <if test="roomnumber != null">
+        roomnumber = #{roomnumber,jdbcType=VARCHAR},
       </if>
       <if test="userid != null">
         userid = #{userid,jdbcType=INTEGER},
@@ -238,8 +252,8 @@
       <if test="del != null">
         del = #{del,jdbcType=SMALLINT},
       </if>
-      <if test="roomnumber != null">
-        roomnumber = #{roomnumber,jdbcType=VARCHAR},
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -247,12 +261,13 @@
   <update id="updateByPrimaryKey" parameterType="com.diandian.model.Room">
     update room
     set rname = #{rname,jdbcType=VARCHAR},
+      roomnumber = #{roomnumber,jdbcType=VARCHAR},
       userid = #{userid,jdbcType=INTEGER},
       personcount = #{personcount,jdbcType=SMALLINT},
       distance = #{distance,jdbcType=DOUBLE},
       note = #{note,jdbcType=VARCHAR},
       del = #{del,jdbcType=SMALLINT},
-      roomnumber = #{roomnumber,jdbcType=VARCHAR}
+      createtime = #{createtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

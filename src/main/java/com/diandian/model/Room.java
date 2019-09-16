@@ -1,9 +1,15 @@
 package com.diandian.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class Room {
     private Integer id;
 
     private String rname;
+
+    private String roomnumber;
 
     private Integer userid;
 
@@ -15,7 +21,8 @@ public class Room {
 
     private Short del;
 
-    private String roomnumber;
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")
+    private Date createtime;
 
     public Integer getId() {
         return id;
@@ -31,6 +38,14 @@ public class Room {
 
     public void setRname(String rname) {
         this.rname = rname == null ? null : rname.trim();
+    }
+
+    public String getRoomnumber() {
+        return roomnumber;
+    }
+
+    public void setRoomnumber(String roomnumber) {
+        this.roomnumber = roomnumber == null ? null : roomnumber.trim();
     }
 
     public Integer getUserid() {
@@ -73,11 +88,11 @@ public class Room {
         this.del = del;
     }
 
-    public String getRoomnumber() {
-        return roomnumber;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setRoomnumber(String roomnumber) {
-        this.roomnumber = roomnumber == null ? null : roomnumber.trim();
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 }
