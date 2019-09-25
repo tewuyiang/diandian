@@ -2,7 +2,6 @@ package com.diandian.controller.attendance.websocket;
 
 import com.alibaba.fastjson.JSONObject;
 import com.diandian.constants.AttConstant;
-import com.diandian.exception.ParamException;
 import com.diandian.model.Room;
 import com.diandian.model.Roomdetail;
 import com.diandian.model.Userdetail;
@@ -16,12 +15,12 @@ import com.diandian.utils.attendance.MapPoint;
 import com.diandian.utils.attendance.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Date;
@@ -33,9 +32,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 老师点击开始考勤的处理类
+ * configurator = SpringConfigurator.class是为了使该类可以通过Spring注入。
  */
-@Controller
-@ServerEndpoint("/Attendance/start")
+@ServerEndpoint(value = "/Attendance/start",configurator = SpringConfigurator.class)
 public class AttendanceRoom {
     // 存储所有考勤房间，一个AttendanceRoom对象表示一个房间
     public static Map<Integer, AttendanceRoom> roomMap = new ConcurrentHashMap<>();
@@ -67,12 +66,12 @@ public class AttendanceRoom {
     private UserdetailService userdetailService;
 
 
-
     public AttendanceRoom() {
         // 使用线程安全的list集合
         studentList = new CopyOnWriteArrayList<>();
         // 使用线程安全的map集合
         studentDataMap = new ConcurrentHashMap<>();
+
     }
 
 
@@ -105,10 +104,7 @@ public class AttendanceRoom {
     public void start(Session teacherSession) {
         // 记录信息
         this.teacherSession = teacherSession;
-        // 向客户端回送成功连接提示
-        JSONObject message = MessageUtils.messageToJson(AttConstant.CONNECT,
-                AttConstant.SUCCESS, "请发送确认消息");
-        sendMessage(teacherSession, message.toJSONString());
+        System.out.println("新客户端发起连接");
     }
 
 
@@ -125,19 +121,27 @@ public class AttendanceRoom {
         // 获取消息的类型
         String type = (String) jsonObject.get("type");
 
-
         if (AttConstant.START.equals(type)) {
             // 接收到开始消息
             Integer id = jsonObject.getInteger("data");
+            System.out.println("新用户开始考勤，房间号：" + id);
+
             if (id != null) {
-                roomID = id;
-                getStartMessage();
+                getStartMessage(id);
+                // 记录考勤开始时间
+                beginTime = new Date();
+            }else{
+                // 房间号未正常获取到
+                JSONObject msg = MessageUtils.messageToJson(AttConstant.START, AttConstant.FAILURE,
+                        "房间信息获取失败");
+                sendMessage(teacherSession, msg.toJSONString());
             }
-        }
-        if (AttConstant.LOCATION.equals(type)) {
+
+        } else if (AttConstant.LOCATION.equals(type)) {
             // 若接受到的消息为位置坐标
             // 更新老师的位置
             newLocation(jsonObject);
+
         } else if (AttConstant.END.equals(type)) {
             // 接收到的消息为结束考勤
             // 回送允许结束提示信息
@@ -148,57 +152,75 @@ public class AttendanceRoom {
     }
 
 
-
     /**
      * 结束考勤，或者意外断开连接
      * @OnClose 此注解声明的方法将在连接断开时触发
      */
     @OnClose
     public void finish() {
-        // 记录结束时间
-        endTime = new Date();
-        // 则更新将本次考勤的信息更新进数据库
-        saveData();
+        System.out.println("结束考勤，房间号：" + this.roomID);
+
+        if (beginTime != null){
+            // 记录结束时间
+             endTime = new Date();
+            // 则更新将本次考勤的信息更新进数据库
+            saveData();
+        }
         // 关闭考勤房间，清除所有用户
         closeRoom();
     }
 
 
-
     /**
      * 客户端确认开始考勤后，服务器回送考勤房间信息
      */
-    public void getStartMessage() {
+    public void getStartMessage(Integer id) {
         JSONObject message = null;
 
         try {
-            // 根据房间id查询数据库中房间的信息
-            Room room = roomService.selectRoomByRoomId(roomID);
-            // 若房间不存在，直接结束
-            if (room == null) {
-                CloseUtil.close(teacherSession);
+            // 若房间已经在roomMap中，发送反馈信息
+            if (roomMap.get(id) != null) {
+                message = MessageUtils.messageToJson(AttConstant.START,
+                        AttConstant.ERROR, "上次考勤未正常退出！");
                 return;
-            } else {
-                // 获取房间信息
-                this.teacherID = room.getUserid();  // 老师id
-                this.distance = room.getDistance(); // 考勤距离
             }
+
+            // 根据房间id查询数据库中房间的信息
+            Room room = roomService.selectRoomByRoomId(id);
+            // 若房间不存在，发送反馈信息
+            if (room == null) {
+                message = MessageUtils.messageToJson(AttConstant.START,
+                        AttConstant.ERROR, "房间号有误！");
+                return;
+            }
+
+            // 保存房间信息
+            roomID = id;
+            teacherID = room.getUserid();  // 老师id
+            distance = room.getDistance(); // 考勤距离
 
             // 数据库查询房间内的所有用户，并进行封装
             List<UserCustom> students = roomService.selectUsersInRoomByRoomId(roomID);
 
-            // 将房间内的所有学生的考勤数据记录在studentDataMap中
-            for (UserCustom student : students) {
-                studentDataMap.put(student.getId(), new AttendanceData());
-            }
-            // 封装成功开始的回送数据
-            message = MessageUtils.messageToJson(AttConstant.START,
-                    AttConstant.SUCCESS, students);
+            // 若房间中没有学生，无法开始考勤
+            if (students == null || students.size() <= 0) {
+                // 封装开始失败的回送数据
+                message = MessageUtils.messageToJson(AttConstant.START,
+                        AttConstant.FAILURE, "房间人数为0，无法开始考勤！");
+            } else {
+                // 若房间人数不为0
+                // 将房间内的所有学生的考勤数据记录在studentDataMap中
+                for (UserCustom student : students) {
+                    studentDataMap.put(student.getId(), new AttendanceData());
+                }
+                // 封装成功开始的回送数据
+                message = MessageUtils.messageToJson(AttConstant.START,
+                        AttConstant.SUCCESS, students);
 
-            // 将当前开始考勤的房间加入到集合中
-            roomMap.put(roomID, this);
-            // 记录考勤开始时间
-            beginTime = new Date();
+                // 将当前开始考勤的房间加入到集合中
+                roomMap.put(roomID, this);
+
+            }
         } catch (Exception e) {
             // 查询数据库时出现异常
             e.printStackTrace();
@@ -219,6 +241,7 @@ public class AttendanceRoom {
      */
     private void sendMessage(Session session, String message) {
         try {
+            System.out.println(message);
             session.getBasicRemote().sendText(message);
         } catch (IOException e) {
             e.printStackTrace();
@@ -233,8 +256,11 @@ public class AttendanceRoom {
      */
     private void newLocation(JSONObject location) {
         // 获取经纬度，latitude：纬度   longitude：经度
-        Double latitude = (Double) location.get("latitude");
-        Double longitude = (Double) location.get("longitude");
+        Double latitude = location.getDouble("latitude");
+        Double longitude = location.getDouble("longitude");
+
+        System.out.println("教师号：" + teacherID + "房间号:" + roomID +
+                ",获取到教师位置，经度：" + latitude + "\t 纬度：" + longitude);
 
         if (latitude == null || longitude == null) {
             throw new RuntimeException("位置信息获取异常");

@@ -212,6 +212,12 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- spring的websocket支持 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-websocket</artifactId>
+      <version>${spring-version}</version>
+    </dependency>
 
     <!-- 逆向工程 -->
     <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->

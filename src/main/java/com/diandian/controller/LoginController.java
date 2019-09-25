@@ -5,15 +5,12 @@ import com.diandian.service.UserService;
 import com.diandian.utils.AnalysisCode;
 import com.diandian.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/login") // 127.0.0.1:8080/diandian/login/index
+@RequestMapping("/login")
 public class LoginController {
 
 	@Autowired
@@ -28,9 +25,9 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping("index")
-	public Map<String, Object> login(@RequestParam(defaultValue = "") String nickName,
-									 @RequestParam(defaultValue = "") String code) throws Exception {
+	@GetMapping("/login/{nickName}/{code}")
+	public Map<String, Object> login(@PathVariable("nickName") String nickName,
+									  @PathVariable("code") String code) throws Exception {
 		Map<Object, Object> map;
 		try {
 			map = AnalysisCode.userOpenid(code);
@@ -50,6 +47,6 @@ public class LoginController {
 			userService.insertUser(user);
 			System.out.println("插入用户id:" + user.getId());
 		}
-		return R.ok(user.getId(), "用户id查找成功");
+		return R.ok(user.getId(), "登录成功！");
 	}
 }

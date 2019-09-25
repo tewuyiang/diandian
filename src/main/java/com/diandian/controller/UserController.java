@@ -33,7 +33,6 @@ public class UserController {
 
     /**
      * 根据主键id查询用户信息
-     *
      * @param id
      * @return
      * @throws Exception

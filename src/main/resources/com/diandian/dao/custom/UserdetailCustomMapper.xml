@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="">
+<mapper namespace="com.diandian.dao.custom.UserdetailCustomMapper">
 
+    <!-- 查询某个用户在某个房间中的全部考勤明细 -->
+    <select id="selectOnStudentDetails" parameterType="Integer" resultMap="selectOnStudentDetailsMap">
+        select userdetail.*,
+			 roomdetail.roomid,
+			 roomdetail.number,
+			 roomdetail.endtime,
+			 roomdetail.begintime
+        from userdetail,roomdetail
+        where roomdetail.roomid = #{roomId} and
+			userdetail.userid = #{userId} and
+			roomdetail.id = userdetail.roomdetailid
+    </select>
+    <resultMap id="selectOnStudentDetailsMap" type="userdetailCustom">
+        <id column="id" property="id" />
+        <result column="roomdetailid" property="roomdetailid" />
+        <result column="userid" property="userid" />
+        <result column="attendtime" property="attendtime" />
+        <result column="presenttime" property="presenttime" />
+        <association property="roomdetail" javaType="roomdetail">
+            <result column="roomid" property="roomid" />
+            <result column="number" property="number" />
+            <result column="endtime" property="endtime" />
+            <result column="begintime" property="begintime" />
+        </association>
+    </resultMap>
 
 </mapper>

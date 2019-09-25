@@ -1,6 +1,5 @@
 package com.diandian.dao.custom;
 
-import com.diandian.model.custom.RoomCustom;
 import com.diandian.model.custom.RoomdetailCustom;
 import org.apache.ibatis.annotations.Select;
 

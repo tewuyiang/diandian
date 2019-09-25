@@ -8,6 +8,7 @@ import com.diandian.utils.attendance.CheckUtil;
 import com.diandian.utils.attendance.MapPoint;
 import com.diandian.utils.attendance.MessageUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -23,8 +24,7 @@ import java.util.Map;
  * 被考勤用户点击签到后的处理类
  */
 
-@Controller
-@ServerEndpoint("/Attendance/checkOne")
+@ServerEndpoint(value = "/Attendance/checkOne", configurator = SpringConfigurator.class)
 public class OneStudentCheck {
     // 用户当前与服务器的会话
     private Session session;
@@ -64,10 +64,6 @@ public class OneStudentCheck {
         // 记录信息
         this.session = session;
 
-        // 回送连接成功消息
-        JSONObject message = MessageUtils.messageToJson( AttConstant.CONNECT,
-                AttConstant.SUCCESS, "连接成功");
-        sendMessage(session, message.toJSONString());
     }
 
 
@@ -82,7 +78,6 @@ public class OneStudentCheck {
         JSONObject jsonObject = JSONObject.parseObject(message);
         String type = (String) jsonObject.get("type");
 
-
         if (AttConstant.START.equals(type)) {
             // 若发送的是开始签到消息
             // 获取房间id和用户id
@@ -90,6 +85,7 @@ public class OneStudentCheck {
             Integer studentId = jsonObject.getInteger("studentId");
 
             if (roomid != null && studentId != null) {
+                System.out.println("新用户加入考勤房间，房间号：" + roomid + "\t 用户号" + studentId);
                 // 记录数据
                 roomID = roomid;
                 studentID = studentId;
@@ -153,12 +149,24 @@ public class OneStudentCheck {
             // 视为考勤未开始
             msg = MessageUtils.messageToJson(AttConstant.START,
                     AttConstant.FAILURE, "考勤未开始");
+
+            System.out.println("签到情况，房间号：" + roomID + "\t 用户号" + studentID +"\t考勤未开启");
         } else {
             // 若考勤房间存在，表示已经开始考勤
             // 将当前用户加入房间
-            room.getStudentList().add(this);
-            msg = MessageUtils.messageToJson(AttConstant.START,
-                    AttConstant.SUCCESS, "成功加入考勤房间");
+            AttendanceData studentData = room.getStudentDataMap().get(studentID);
+            // 学生数据不存在，直接返回
+            if (studentData != null) {
+                room.getStudentList().add(this);
+                msg = MessageUtils.messageToJson(AttConstant.START,
+                        AttConstant.SUCCESS, "成功加入考勤房间");
+
+                System.out.println("签到情况，房间号：" + roomID + "\t 用户号" + studentID + "\t用户加入房间成功");
+            } else {
+                msg = MessageUtils.messageToJson(AttConstant.START,
+                        AttConstant.ERROR, "您不在考勤房间中！");
+                System.out.println("签到情况，房间号：" + roomID + "\t 用户号" + studentID + "\t您不在考勤房间中");
+            }
         }
         return msg;
     }
@@ -171,8 +179,11 @@ public class OneStudentCheck {
      */
     private void newLocation(JSONObject location) {
         // 获取经纬度
-        Double latitude = (Double) location.get("latitude");
-        Double longitude = (Double) location.get("longitude");
+        Double latitude = location.getDouble("latitude");
+        Double longitude = location.getDouble("longitude");
+
+        System.out.println("学生号：" + studentID + "房间号:" + roomID +
+                ",获取到教师位置，经度：" + latitude + "\t 纬度：" + longitude);
 
         // 位置信息为空
         if (latitude == null || longitude == null) {
@@ -188,6 +199,7 @@ public class OneStudentCheck {
         if (studentLoca == null) {
             studentLoca = new MapPoint(latitude, longitude);
 
+            // 获取学生数据
             AttendanceData studentData = room.getStudentDataMap().get(studentID);
             // 学生数据不存在，直接返回
             if (studentData == null) return;
@@ -209,7 +221,10 @@ public class OneStudentCheck {
      * 退出考勤房间
      */
     private void dropOutRoom() {
-        room.getStudentList().remove(this);
+        if (room != null) {
+            System.out.println("用户退出考勤房间,房间号：" + this.roomID + "用户号：" + this.studentID);
+            room.getStudentList().remove(this);
+        }
     }
 
 
@@ -224,6 +239,7 @@ public class OneStudentCheck {
 
         JSONObject message = null;
 
+        System.out.println("开始测距，学生位置：" + studentLoca + "\t教师位置" + teacherLoca);
         if (studentLoca == null) {
             // 理论上不会有这种情况
             message = MessageUtils.messageToJson(AttConstant.LOCATION,
@@ -231,6 +247,7 @@ public class OneStudentCheck {
         } else {
             // 测距
             double distance = CheckUtil.distanceOf(teacherLoca, studentLoca);
+            System.out.println(distance);
             // 在考勤范围内
             if (distance <= room.getDistance()) {
                 AttendanceData data = room.getStudentDataMap().get(studentID);
@@ -248,6 +265,7 @@ public class OneStudentCheck {
                         AttConstant.FAILURE, distance, studentID);
             }
         }
+//        System.out.println(message.toJSONString());
         // 向老师客户端回送消息
         sendMessage(room.getTeacherSession(), message.toJSONString());
         // 向学生客户端回送消息
