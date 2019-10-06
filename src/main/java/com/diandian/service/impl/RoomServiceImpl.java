@@ -12,6 +12,7 @@ import com.diandian.model.Room;
 import com.diandian.model.User;
 import com.diandian.model.custom.RoomCustom;
 import com.diandian.model.custom.UserCustom;
+import com.diandian.service.QrcodeService;
 import com.diandian.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,8 @@ public class RoomServiceImpl implements RoomService {
     private UserMapper userMapper;
     @Autowired
     private UserCustomMapper userCustomMapper;
-
+    @Autowired
+    private QrcodeService qrcodeService;
 
     /**
      * 根据房间号查询房间内的所有用户
@@ -76,11 +78,12 @@ public class RoomServiceImpl implements RoomService {
     /**
      * 创建一个新的房间
      * @param room
+     * @param contextPath 项目根路径
      * @return
      * @throws Exception
      */
     @Override
-    public Integer insertRoom(Room room) throws Exception {
+    public Integer insertRoom(Room room, String contextPath) throws Exception {
         if (room == null || room.getUserid() == null || room.getDistance() == null || room.getRname() == null
                 || "".equals(room.getRname()) || room.getId() != null) {
             throw new ParamException();
@@ -105,8 +108,13 @@ public class RoomServiceImpl implements RoomService {
         room.setRoomnumber(roomNum);
         room.setPersoncount((short)0);
         room.setDel((short)1);
+        int result = roomMapper.insertSelective(room);
 
-        return roomMapper.insertSelective(room);
+        // 生成二维码
+        if (result > 0) {
+            qrcodeService.createRoomQrode(contextPath, room);
+        }
+        return result;
     }
 
 

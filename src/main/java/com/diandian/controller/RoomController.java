@@ -9,6 +9,7 @@ import com.diandian.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,9 @@ public class RoomController {
      */
     @ResponseBody
     @PostMapping("/createRoom")
-    public R createRoom(Room room) throws Exception {
-        return roomService.insertRoom(room) > 0 ? R.ok(room) : R.error("房间创建失败！");
+    public R createRoom(Room room, HttpServletRequest request) throws Exception {
+        String contextPath = request.getServletContext().getRealPath("/");
+        return roomService.insertRoom(room, contextPath) > 0 ? R.ok(room) : R.error("房间创建失败！");
     }
 
 

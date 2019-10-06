@@ -31,7 +31,7 @@ public interface RoomService {
      * @param room
      * @return
      */
-    Integer insertRoom(Room room) throws Exception;
+    Integer insertRoom(Room room, String contextPath) throws Exception;
 
 
     /**

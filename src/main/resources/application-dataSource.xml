@@ -60,6 +60,7 @@
 		<tx:attributes>
 			<!-- 以方法为单位,指定方法应用什么事务属性 isolation:隔离级别 propagation:传播行为 read-only:是否只读 -->
 			<tx:method name="insert*" rollback-for="Exception" />
+			<tx:method name="create*" rollback-for="Exception" />
 			<tx:method name="add*" rollback-for="Exception" />
 			<tx:method name="save*" rollback-for="Exception" />
 			<tx:method name="update*" rollback-for="Exception" />
