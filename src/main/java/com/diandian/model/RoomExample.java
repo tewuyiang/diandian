@@ -365,6 +365,66 @@ public class RoomExample {
             return (Criteria) this;
         }
 
+        public Criteria andCreatetimeIsNull() {
+            addCriterion("createtime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeIsNotNull() {
+            addCriterion("createtime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeEqualTo(Date value) {
+            addCriterion("createtime =", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeNotEqualTo(Date value) {
+            addCriterion("createtime <>", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeGreaterThan(Date value) {
+            addCriterion("createtime >", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("createtime >=", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeLessThan(Date value) {
+            addCriterion("createtime <", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeLessThanOrEqualTo(Date value) {
+            addCriterion("createtime <=", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeIn(List<Date> values) {
+            addCriterion("createtime in", values, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeNotIn(List<Date> values) {
+            addCriterion("createtime not in", values, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeBetween(Date value1, Date value2) {
+            addCriterion("createtime between", value1, value2, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeNotBetween(Date value1, Date value2) {
+            addCriterion("createtime not between", value1, value2, "createtime");
+            return (Criteria) this;
+        }
+
         public Criteria andPersoncountIsNull() {
             addCriterion("personcount is null");
             return (Criteria) this;
@@ -482,6 +542,66 @@ public class RoomExample {
 
         public Criteria andDistanceNotBetween(Double value1, Double value2) {
             addCriterion("distance not between", value1, value2, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedIsNull() {
+            addCriterion("checked is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedIsNotNull() {
+            addCriterion("checked is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedEqualTo(Short value) {
+            addCriterion("checked =", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedNotEqualTo(Short value) {
+            addCriterion("checked <>", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedGreaterThan(Short value) {
+            addCriterion("checked >", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedGreaterThanOrEqualTo(Short value) {
+            addCriterion("checked >=", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedLessThan(Short value) {
+            addCriterion("checked <", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedLessThanOrEqualTo(Short value) {
+            addCriterion("checked <=", value, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedIn(List<Short> values) {
+            addCriterion("checked in", values, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedNotIn(List<Short> values) {
+            addCriterion("checked not in", values, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedBetween(Short value1, Short value2) {
+            addCriterion("checked between", value1, value2, "checked");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckedNotBetween(Short value1, Short value2) {
+            addCriterion("checked not between", value1, value2, "checked");
             return (Criteria) this;
         }
 
@@ -612,66 +732,6 @@ public class RoomExample {
 
         public Criteria andDelNotBetween(Short value1, Short value2) {
             addCriterion("del not between", value1, value2, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeIsNull() {
-            addCriterion("createtime is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeIsNotNull() {
-            addCriterion("createtime is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeEqualTo(Date value) {
-            addCriterion("createtime =", value, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeNotEqualTo(Date value) {
-            addCriterion("createtime <>", value, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeGreaterThan(Date value) {
-            addCriterion("createtime >", value, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("createtime >=", value, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeLessThan(Date value) {
-            addCriterion("createtime <", value, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeLessThanOrEqualTo(Date value) {
-            addCriterion("createtime <=", value, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeIn(List<Date> values) {
-            addCriterion("createtime in", values, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeNotIn(List<Date> values) {
-            addCriterion("createtime not in", values, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeBetween(Date value1, Date value2) {
-            addCriterion("createtime between", value1, value2, "createtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatetimeNotBetween(Date value1, Date value2) {
-            addCriterion("createtime not between", value1, value2, "createtime");
             return (Criteria) this;
         }
     }

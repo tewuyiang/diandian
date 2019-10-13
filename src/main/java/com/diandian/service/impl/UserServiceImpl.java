@@ -3,7 +3,6 @@ package com.diandian.service.impl;
 import com.diandian.dao.UserMapper;
 import com.diandian.dao.custom.UserCustomMapper;
 import com.diandian.exception.ParamException;
-import com.diandian.model.Room;
 import com.diandian.model.User;
 import com.diandian.model.custom.RoomCustom;
 import com.diandian.model.custom.UserCustom;

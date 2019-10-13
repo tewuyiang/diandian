@@ -14,7 +14,7 @@ public interface UserCustomMapper {
      * @return
      * @throws Exception
      */
-    @Select("select * from user where openid = #{openid}")
+    @Select("select * from user where wxid = #{openid}")
     UserCustom getUserByOpenid(String openid) throws Exception;
 
 

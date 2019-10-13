@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class Userdetail {
+public class Singledetail {
     private Integer id;
 
     private Integer roomdetailid;
@@ -14,7 +14,7 @@ public class Userdetail {
     @JsonFormat(pattern = "yy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date attendtime;
 
-    private String presenttime;
+    private Short attendstatus;
 
     public Integer getId() {
         return id;
@@ -48,11 +48,11 @@ public class Userdetail {
         this.attendtime = attendtime;
     }
 
-    public String getPresenttime() {
-        return presenttime;
+    public Short getAttendstatus() {
+        return attendstatus;
     }
 
-    public void setPresenttime(String presenttime) {
-        this.presenttime = presenttime == null ? null : presenttime.trim();
+    public void setAttendstatus(Short attendstatus) {
+        this.attendstatus = attendstatus;
     }
 }

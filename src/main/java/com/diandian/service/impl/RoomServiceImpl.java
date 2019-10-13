@@ -3,14 +3,14 @@ package com.diandian.service.impl;
 import com.diandian.dao.ListsMapper;
 import com.diandian.dao.RoomMapper;
 import com.diandian.dao.UserMapper;
-import com.diandian.dao.custom.ListsCustomMapper;
-import com.diandian.dao.custom.RoomCustomMapper;
-import com.diandian.dao.custom.UserCustomMapper;
+import com.diandian.dao.custom.*;
 import com.diandian.exception.ParamException;
 import com.diandian.model.Lists;
 import com.diandian.model.Room;
 import com.diandian.model.User;
 import com.diandian.model.custom.RoomCustom;
+import com.diandian.model.custom.RoomdetailCustom;
+import com.diandian.model.custom.StatisticsCustom;
 import com.diandian.model.custom.UserCustom;
 import com.diandian.service.QrcodeService;
 import com.diandian.service.RoomService;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class RoomServiceImpl implements RoomService {
     private UserCustomMapper userCustomMapper;
     @Autowired
     private QrcodeService qrcodeService;
+    @Autowired
+    private RoomdetailCustomMapper roomdetailCustomMapper;
+    @Autowired
+    private StatisticsCustomMapper statisticsCustomMapper;
 
     /**
      * 根据房间号查询房间内的所有用户
@@ -110,10 +115,10 @@ public class RoomServiceImpl implements RoomService {
         room.setDel((short)1);
         int result = roomMapper.insertSelective(room);
 
-        // 生成二维码
-        if (result > 0) {
-            qrcodeService.createRoomQrode(contextPath, room);
-        }
+//        // 生成二维码
+//        if (result > 0) {
+//            qrcodeService.createRoomQrode(contextPath, room);
+//        }
         return result;
     }
 
@@ -186,29 +191,32 @@ public class RoomServiceImpl implements RoomService {
         if (lists == null || lists.getRoomid() == null || lists.getUserid() == null) {
             throw new ParamException();
         }
-
         // 查询用户是否存在
         User user = userMapper.selectByPrimaryKey(lists.getUserid());
-        if (user == null) return 2;
-
+        if (user == null) {
+            throw new ParamException("用户信息获取失败!");
+        }
         // 查询用户想要加入的房间是否存在
         RoomCustom r = roomCustomMapper.selectRoomById(lists.getRoomid());
-        if (r == null) return 3;
-
+        if (r == null) {
+            throw new ParamException("房间信息获取失败！");
+        }
         // 查询用户创建的所有房间
         // 用户无法加入自己创建的房间
         List<RoomCustom> rooms1 = userCustomMapper.selectRoomsByUserId(lists.getUserid());
         for (RoomCustom room : rooms1) {
-            if (room.getId() == lists.getRoomid()) return 4;
+            if (room.getId() == lists.getRoomid()) {
+                throw new ParamException("无法加入自己的房间");
+            }
         }
-
         // 查询用户已经加入的所有房间
         // 用户无法加入已经加入过的房间
         List<RoomCustom> rooms2 = userCustomMapper.selectJoinRoomsByUserId(lists.getUserid());
         for (RoomCustom room : rooms2) {
-            if (room.getId() == lists.getRoomid()) return 5;
+            if (room.getId() == lists.getRoomid()) {
+                throw new ParamException("您已在该房间中！");
+            }
         }
-
         // 封装数据
         lists.setDel((short)1);
         if ("".equals(lists.getRemarkname())) {
@@ -252,15 +260,16 @@ public class RoomServiceImpl implements RoomService {
         if (roomId == null || userId == null) {
             throw new ParamException();
         }
-
         // 查询用户是否存在
         User user = userMapper.selectByPrimaryKey(userId);
-        if (user == null) return 2;
-
+        if (user == null) {
+            throw new ParamException("用户信息获取异常!");
+        }
         // 查询用户想要退出的房间是否存在
         RoomCustom r = roomCustomMapper.selectRoomById(roomId);
-        if (r == null) return 3;
-
+        if (r == null) {
+            throw new ParamException("房间信息获取异常");
+        }
         // 判断用户是否在房间中
         Lists l = listsCustomMapper.selectByRoomIdAndUserId(roomId, userId);
         if (null == l || l.getDel() != 1) {
@@ -268,7 +277,6 @@ public class RoomServiceImpl implements RoomService {
             // 直接返回1，表示退出成功
             return 1;
         }
-
         // 若上面的特殊情况都不符合，则直接正常更新数据库
         Integer num = listsCustomMapper.updateListToDelete(roomId, userId);
         if (num > 0) {
@@ -278,6 +286,35 @@ public class RoomServiceImpl implements RoomService {
 //            System.out.println("成功退出");
         }
         return num;
+    }
+
+
+    /**
+     * 获取房间考勤统计情况
+     * 每个学生迟到，旷课，请假...的次数
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public RoomCustom getStudentStatisticsInRoom(Integer roomId) throws Exception {
+        if (roomId == null) {
+            throw new ParamException();
+        }
+        // 判断房间是否存在
+        if (roomMapper.selectByPrimaryKey(roomId) == null) {
+            throw new ParamException();
+        }
+
+        RoomCustom room = new RoomCustom();
+        // 获取考勤
+        List<RoomdetailCustom> roomdetails = roomdetailCustomMapper.selectRoomdetailByRoomId(roomId);
+        if (roomdetails != null) {
+            room.setAttTimes(roomdetails.size());
+            // 获取统计情况
+            List<StatisticsCustom> statistics = statisticsCustomMapper.selectByRoomId(roomId);
+            room.setUserStatistics(statistics);
+        }
+        return room;
     }
 
 

@@ -7,46 +7,50 @@ import com.diandian.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/index")
 public class LoginController {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	/**
-	 * µÇÂ¼ÇëÇó
-	 * 
-	 * @param nickName êÇ³Æ
-	 * @param code     ¶¯Ì¬²ÎÊı
-	 * @return openid¡¢session_key µÄmap
-	 * @throws Exception
-	 */
-	@ResponseBody
-	@GetMapping("/login/{nickName}/{code}")
-	public Map<String, Object> login(@PathVariable("nickName") String nickName,
-									  @PathVariable("code") String code) throws Exception {
-		Map<Object, Object> map;
-		try {
-			map = AnalysisCode.userOpenid(code);
-		} catch (Exception e) {
-			// ½âÎöÒì³£
-			return R.error("½âÎöcodeÊ§°Ü");
-		}
-		String openid = (String) map.get("openid");
+    /**
+     * ç™»å½•è¯·æ±‚
+     *
+     * @param nickName æ˜µç§°
+     * @param code     åŠ¨æ€å‚æ•°
+     * @return openidã€session_key çš„map
+     * @throws Exception
+     */
+    @ResponseBody
+    @GetMapping("/login/{nickName}/{code}")
+    public Map<String, Object> login(@PathVariable("nickName") String nickName,
+                                     @PathVariable("code") String code,
+                                     HttpSession session) throws Exception {
+        Map<Object, Object> map;
+        try {
+            map = AnalysisCode.userOpenid(code);
+        } catch (Exception e) {
+            // è§£æå¼‚å¸¸
+            return R.error("èº«ä»½è§£æå¤±è´¥");
+        }
+        String openid = (String) map.get("openid");
 
-		// ²éÑ¯ÊÇ·ñÒÑ¾­´æ´¢ÕË»§ĞÅÏ¢
-		UserCustom user = userService.getUserByOpenid(openid);
-		if (user == null) { // ²éÑ¯Îª¿Õ
-			user = new UserCustom();
-			user.setNickname(nickName);
-			user.setWxid(openid);
+        // æŸ¥è¯¢æ˜¯å¦å·²ç»å­˜å‚¨è´¦æˆ·ä¿¡æ¯
+        UserCustom user = userService.getUserByOpenid(openid);
+        // è‹¥ç”¨æˆ·ä¸å­˜åœ¨ï¼Œåˆ™æ‰§è¡Œæ’å…¥æ“ä½œ
+        if (user == null) {
+            user = new UserCustom();
+            user.setNickname(nickName);
+            user.setWxid(openid);
 
-			userService.insertUser(user);
-			System.out.println("²åÈëÓÃ»§id:" + user.getId());
-		}
-		return R.ok(user.getId(), "µÇÂ¼³É¹¦£¡");
-	}
+            userService.insertUser(user);
+            System.out.println("æ’å…¥ç”¨æˆ·id:" + user.getId());
+        }
+        session.setAttribute("user",user);
+        return R.ok(user.getId(), "ç™»å½•æˆåŠŸï¼");
+    }
 }

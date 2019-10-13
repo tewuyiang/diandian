@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.diandian.dao.ListsMapper">
-  <resultMap id="BaseResultMap" type="com.diandian.model.Lists">
+<mapper namespace="com.diandian.dao.RoomapplyMapper">
+  <resultMap id="BaseResultMap" type="com.diandian.model.Roomapply">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="typeid" jdbcType="INTEGER" property="typeid" />
     <result column="roomid" jdbcType="INTEGER" property="roomid" />
-    <result column="userid" jdbcType="INTEGER" property="userid" />
-    <result column="remarkname" jdbcType="VARCHAR" property="remarkname" />
-    <result column="del" jdbcType="SMALLINT" property="del" />
+    <result column="dealresult" jdbcType="INTEGER" property="dealresult" />
+    <result column="dealtime" jdbcType="TIMESTAMP" property="dealtime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, roomid, userid, remarkname, del
+    id, typeid, roomid, dealresult, dealtime
   </sql>
-  <select id="selectByExample" parameterType="com.diandian.model.ListsExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.diandian.model.RoomapplyExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from lists
+    from roomapply
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,85 +86,85 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from lists
+    from roomapply
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from lists
+    delete from roomapply
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.diandian.model.ListsExample">
-    delete from lists
+  <delete id="deleteByExample" parameterType="com.diandian.model.RoomapplyExample">
+    delete from roomapply
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.diandian.model.Lists">
+  <insert id="insert" parameterType="com.diandian.model.Roomapply">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into lists (roomid, userid, remarkname, 
-      del)
-    values (#{roomid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{remarkname,jdbcType=VARCHAR}, 
-      #{del,jdbcType=SMALLINT})
+    insert into roomapply (typeid, roomid, dealresult, 
+      dealtime)
+    values (#{typeid,jdbcType=INTEGER}, #{roomid,jdbcType=INTEGER}, #{dealresult,jdbcType=INTEGER}, 
+      #{dealtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.diandian.model.Lists">
+  <insert id="insertSelective" parameterType="com.diandian.model.Roomapply">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into lists
+    insert into roomapply
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="typeid != null">
+        typeid,
+      </if>
       <if test="roomid != null">
         roomid,
       </if>
-      <if test="userid != null">
-        userid,
+      <if test="dealresult != null">
+        dealresult,
       </if>
-      <if test="remarkname != null">
-        remarkname,
-      </if>
-      <if test="del != null">
-        del,
+      <if test="dealtime != null">
+        dealtime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
       <if test="roomid != null">
         #{roomid,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
+      <if test="dealresult != null">
+        #{dealresult,jdbcType=INTEGER},
       </if>
-      <if test="remarkname != null">
-        #{remarkname,jdbcType=VARCHAR},
-      </if>
-      <if test="del != null">
-        #{del,jdbcType=SMALLINT},
+      <if test="dealtime != null">
+        #{dealtime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.diandian.model.ListsExample" resultType="java.lang.Long">
-    select count(*) from lists
+  <select id="countByExample" parameterType="com.diandian.model.RoomapplyExample" resultType="java.lang.Long">
+    select count(*) from roomapply
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update lists
+    update roomapply
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.typeid != null">
+        typeid = #{record.typeid,jdbcType=INTEGER},
+      </if>
       <if test="record.roomid != null">
         roomid = #{record.roomid,jdbcType=INTEGER},
       </if>
-      <if test="record.userid != null">
-        userid = #{record.userid,jdbcType=INTEGER},
+      <if test="record.dealresult != null">
+        dealresult = #{record.dealresult,jdbcType=INTEGER},
       </if>
-      <if test="record.remarkname != null">
-        remarkname = #{record.remarkname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.del != null">
-        del = #{record.del,jdbcType=SMALLINT},
+      <if test="record.dealtime != null">
+        dealtime = #{record.dealtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -172,40 +172,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update lists
+    update roomapply
     set id = #{record.id,jdbcType=INTEGER},
+      typeid = #{record.typeid,jdbcType=INTEGER},
       roomid = #{record.roomid,jdbcType=INTEGER},
-      userid = #{record.userid,jdbcType=INTEGER},
-      remarkname = #{record.remarkname,jdbcType=VARCHAR},
-      del = #{record.del,jdbcType=SMALLINT}
+      dealresult = #{record.dealresult,jdbcType=INTEGER},
+      dealtime = #{record.dealtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.diandian.model.Lists">
-    update lists
+  <update id="updateByPrimaryKeySelective" parameterType="com.diandian.model.Roomapply">
+    update roomapply
     <set>
+      <if test="typeid != null">
+        typeid = #{typeid,jdbcType=INTEGER},
+      </if>
       <if test="roomid != null">
         roomid = #{roomid,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
-        userid = #{userid,jdbcType=INTEGER},
+      <if test="dealresult != null">
+        dealresult = #{dealresult,jdbcType=INTEGER},
       </if>
-      <if test="remarkname != null">
-        remarkname = #{remarkname,jdbcType=VARCHAR},
-      </if>
-      <if test="del != null">
-        del = #{del,jdbcType=SMALLINT},
+      <if test="dealtime != null">
+        dealtime = #{dealtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.diandian.model.Lists">
-    update lists
-    set roomid = #{roomid,jdbcType=INTEGER},
-      userid = #{userid,jdbcType=INTEGER},
-      remarkname = #{remarkname,jdbcType=VARCHAR},
-      del = #{del,jdbcType=SMALLINT}
+  <update id="updateByPrimaryKey" parameterType="com.diandian.model.Roomapply">
+    update roomapply
+    set typeid = #{typeid,jdbcType=INTEGER},
+      roomid = #{roomid,jdbcType=INTEGER},
+      dealresult = #{dealresult,jdbcType=INTEGER},
+      dealtime = #{dealtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

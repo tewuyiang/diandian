@@ -33,7 +33,6 @@ public class RoomController {
     }
 
 
-
     /**
      * 根据房间id查找房间
      * @param roomId
@@ -112,16 +111,7 @@ public class RoomController {
     @ResponseBody
     @PostMapping("/userJoinRoom")
     public R userJoinRoom(Lists lists) throws Exception{
-        Integer result = roomService.insertLists(lists);
-        switch (result) {
-            case 0 : return R.error("操作失败！");
-            case 1 : return R.ok("操作成功！");
-            case 2 : return R.error("用户信息获取失败！");     // 数据库无此用户
-            case 3 : return R.error("房间信息获取失败！");     // 数据库无此房间
-            case 4 : return R.error("无法加入自己的房间！");    // 用户无法加入自己创建的房间
-            case 5 : return R.error("您已加入该房间！");     // 用户无法加入已经加入过的房间
-        }
-        return R.error("未知错误！");
+        return roomService.insertLists(lists) > 0 ? R.ok() : R.error();
     }
 
 
@@ -134,14 +124,21 @@ public class RoomController {
     @GetMapping("/userDropOutRoom/{roomId}/{userId}")
     public R userDropOutRoom(@PathVariable("roomId") Integer roomId,
                              @PathVariable("userId") Integer userId) throws Exception{
-        Integer result = roomService.deleteUserToRoom(roomId, userId);
-        switch (result) {
-            case 0 : return R.error("操作失败!");
-            case 1 : return R.ok("操作成功!");
-            case 2 : return R.error("用户信息获取失败!");   // 用户不存在
-            case 3 : return R.error("房间信息获取失败!");   // 房间不存在
-        }
-        return R.error("未知错误");
+        return roomService.deleteUserToRoom(roomId, userId) > 0 ? R.ok() : R.error();
+    }
+
+
+    /**
+     * 获取房间考勤统计情况
+     * 每个学生迟到，旷课，请假...的次数
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/getStudentStatistics/{roomId}")
+    public R getStudentStatisticsInRoom(@PathVariable("roomId") Integer roomId) throws Exception{
+        RoomCustom room = roomService.getStudentStatisticsInRoom(roomId);
+        return room == null || room.getAttTimes() == null ? R.no() : R.ok(room);
     }
 
 }

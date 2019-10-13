@@ -11,8 +11,6 @@ public class Lists {
 
     private Short del;
 
-    private String statu;
-
     public Integer getId() {
         return id;
     }
@@ -51,13 +49,5 @@ public class Lists {
 
     public void setDel(Short del) {
         this.del = del;
-    }
-
-    public String getStatu() {
-        return statu;
-    }
-
-    public void setStatu(String statu) {
-        this.statu = statu == null ? null : statu.trim();
     }
 }

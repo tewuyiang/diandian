@@ -44,15 +44,27 @@
 		<!-- 根据表明逆向分享，生成的对应的类
 			generatedKey配置返回自增主键
 		-->
-		<table schema="" tableName="qrcode" domainObjectName="Qrcode">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
-		</table>
+		<!--<table schema="" tableName="statistics" domainObjectName="Statistics">-->
+			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+		<!--</table>-->
+		<!--<table schema="" tableName="singledetail" domainObjectName="Singledetail">-->
+			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+		<!--</table>-->
+		<!--<table schema="" tableName="roomapply" domainObjectName="Roomapply">-->
+			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+		<!--</table>-->
+		<!--<table schema="" tableName="msgtype" domainObjectName="Msgtype">-->
+			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+		<!--</table>-->
+		<!--<table schema="" tableName="qrcode" domainObjectName="Qrcode">-->
+			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+		<!--</table>-->
 		<!--<table schema="" tableName="lists" domainObjectName="Lists">-->
 			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 		<!--</table>-->
-		<!--<table schema="" tableName="room" domainObjectName="Room">-->
-			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-		<!--</table>-->
+		<table schema="" tableName="room" domainObjectName="Room">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
 		<!--<table schema="" tableName="roomdetail" domainObjectName="Roomdetail">-->
 			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 		<!--</table>-->

@@ -6,11 +6,12 @@
     <result column="rname" jdbcType="VARCHAR" property="rname" />
     <result column="roomnumber" jdbcType="VARCHAR" property="roomnumber" />
     <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="personcount" jdbcType="SMALLINT" property="personcount" />
     <result column="distance" jdbcType="DOUBLE" property="distance" />
+    <result column="checked" jdbcType="SMALLINT" property="checked" />
     <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="del" jdbcType="SMALLINT" property="del" />
-    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, rname, roomnumber, userid, personcount, distance, note, del, createtime
+    id, rname, roomnumber, userid, createtime, personcount, distance, checked, note, 
+    del
   </sql>
   <select id="selectByExample" parameterType="com.diandian.model.RoomExample" resultMap="BaseResultMap">
     select
@@ -108,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into room (rname, roomnumber, userid, 
-      personcount, distance, note, 
-      del, createtime)
+      createtime, personcount, distance, 
+      checked, note, del
+      )
     values (#{rname,jdbcType=VARCHAR}, #{roomnumber,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
-      #{personcount,jdbcType=SMALLINT}, #{distance,jdbcType=DOUBLE}, #{note,jdbcType=VARCHAR}, 
-      #{del,jdbcType=SMALLINT}, #{createtime,jdbcType=TIMESTAMP})
+      #{createtime,jdbcType=TIMESTAMP}, #{personcount,jdbcType=SMALLINT}, #{distance,jdbcType=DOUBLE}, 
+      #{checked,jdbcType=SMALLINT}, #{note,jdbcType=VARCHAR}, #{del,jdbcType=SMALLINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.diandian.model.Room">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -129,20 +133,23 @@
       <if test="userid != null">
         userid,
       </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
       <if test="personcount != null">
         personcount,
       </if>
       <if test="distance != null">
         distance,
       </if>
+      <if test="checked != null">
+        checked,
+      </if>
       <if test="note != null">
         note,
       </if>
       <if test="del != null">
         del,
-      </if>
-      <if test="createtime != null">
-        createtime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -155,20 +162,23 @@
       <if test="userid != null">
         #{userid,jdbcType=INTEGER},
       </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
       <if test="personcount != null">
         #{personcount,jdbcType=SMALLINT},
       </if>
       <if test="distance != null">
         #{distance,jdbcType=DOUBLE},
       </if>
+      <if test="checked != null">
+        #{checked,jdbcType=SMALLINT},
+      </if>
       <if test="note != null">
         #{note,jdbcType=VARCHAR},
       </if>
       <if test="del != null">
         #{del,jdbcType=SMALLINT},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -193,20 +203,23 @@
       <if test="record.userid != null">
         userid = #{record.userid,jdbcType=INTEGER},
       </if>
+      <if test="record.createtime != null">
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.personcount != null">
         personcount = #{record.personcount,jdbcType=SMALLINT},
       </if>
       <if test="record.distance != null">
         distance = #{record.distance,jdbcType=DOUBLE},
       </if>
+      <if test="record.checked != null">
+        checked = #{record.checked,jdbcType=SMALLINT},
+      </if>
       <if test="record.note != null">
         note = #{record.note,jdbcType=VARCHAR},
       </if>
       <if test="record.del != null">
         del = #{record.del,jdbcType=SMALLINT},
-      </if>
-      <if test="record.createtime != null">
-        createtime = #{record.createtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -219,11 +232,12 @@
       rname = #{record.rname,jdbcType=VARCHAR},
       roomnumber = #{record.roomnumber,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
       personcount = #{record.personcount,jdbcType=SMALLINT},
       distance = #{record.distance,jdbcType=DOUBLE},
+      checked = #{record.checked,jdbcType=SMALLINT},
       note = #{record.note,jdbcType=VARCHAR},
-      del = #{record.del,jdbcType=SMALLINT},
-      createtime = #{record.createtime,jdbcType=TIMESTAMP}
+      del = #{record.del,jdbcType=SMALLINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -240,20 +254,23 @@
       <if test="userid != null">
         userid = #{userid,jdbcType=INTEGER},
       </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
       <if test="personcount != null">
         personcount = #{personcount,jdbcType=SMALLINT},
       </if>
       <if test="distance != null">
         distance = #{distance,jdbcType=DOUBLE},
       </if>
+      <if test="checked != null">
+        checked = #{checked,jdbcType=SMALLINT},
+      </if>
       <if test="note != null">
         note = #{note,jdbcType=VARCHAR},
       </if>
       <if test="del != null">
         del = #{del,jdbcType=SMALLINT},
-      </if>
-      <if test="createtime != null">
-        createtime = #{createtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -263,11 +280,12 @@
     set rname = #{rname,jdbcType=VARCHAR},
       roomnumber = #{roomnumber,jdbcType=VARCHAR},
       userid = #{userid,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
       personcount = #{personcount,jdbcType=SMALLINT},
       distance = #{distance,jdbcType=DOUBLE},
+      checked = #{checked,jdbcType=SMALLINT},
       note = #{note,jdbcType=VARCHAR},
-      del = #{del,jdbcType=SMALLINT},
-      createtime = #{createtime,jdbcType=TIMESTAMP}
+      del = #{del,jdbcType=SMALLINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.diandian.dao.custom.SingledetailCustomMapper">
+
+    <select id="selectSingledetailsByRoomdetailId" parameterType="Integer"
+			resultMap="selectSingledetailsByRoomdetailIdMap">
+        select singledetail.*,
+			 lists.roomid,
+			 lists.remarkname
+		from singledetail, lists
+		where singledetail.roomdetailid = #{roomdetailId} and
+			  lists.roomid = #{roomId} and
+			  singledetail.userid = lists.userid
+    </select>
+	<resultMap id="selectSingledetailsByRoomdetailIdMap" type="SingledetailCustom">
+		<id property="id" column="id" />
+		<result property="roomdetailid" column="roomdetailid" />
+		<result property="userid" column="userid" />
+		<result property="attendtime" column="attendtime" />
+		<result property="attendstatus" column="attendstatus" />
+		<association property="lists" javaType="lists">
+			<result property="roomid" column="roomid" />
+			<result property="remarkname" column="remarkname" />
+		</association>
+	</resultMap>
+
+
+	<select id="selectOnStudentDetails" parameterType="Integer"
+			resultMap="selectOnStudentDetailsMap">
+		select singledetail.*,
+			 roomdetail.roomid,
+			 roomdetail.number,
+			 roomdetail.endtime,
+			 roomdetail.begintime
+		from singledetail,roomdetail
+		where roomdetail.roomid = #{roomId} and
+			singledetail.userid = #{userId} and
+			roomdetail.id = singledetail.roomdetailid
+	</select>
+    <resultMap id="selectOnStudentDetailsMap" type="SingledetailCustom">
+        <id column="id" property="id" />
+        <result column="roomdetailid" property="roomdetailid" />
+        <result column="userid" property="userid" />
+        <result column="attendtime" property="attendtime" />
+        <result column="attendstatus" property="attendstatus" />
+        <association property="roomdetail" javaType="roomdetail">
+            <result column="roomid" property="roomid" />
+            <result column="number" property="number" />
+            <result column="endtime" property="endtime" />
+            <result column="begintime" property="begintime" />
+        </association>
+    </resultMap>
+
+</mapper>

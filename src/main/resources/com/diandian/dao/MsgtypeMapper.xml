@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.diandian.dao.ListsMapper">
-  <resultMap id="BaseResultMap" type="com.diandian.model.Lists">
+<mapper namespace="com.diandian.dao.MsgtypeMapper">
+  <resultMap id="BaseResultMap" type="com.diandian.model.Msgtype">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="roomid" jdbcType="INTEGER" property="roomid" />
-    <result column="userid" jdbcType="INTEGER" property="userid" />
-    <result column="remarkname" jdbcType="VARCHAR" property="remarkname" />
-    <result column="del" jdbcType="SMALLINT" property="del" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="sendtime" jdbcType="TIMESTAMP" property="sendtime" />
+    <result column="senduser" jdbcType="INTEGER" property="senduser" />
+    <result column="receiveuser" jdbcType="INTEGER" property="receiveuser" />
+    <result column="isread" jdbcType="BIT" property="isread" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, roomid, userid, remarkname, del
+    id, type, sendtime, senduser, receiveuser, isread
   </sql>
-  <select id="selectByExample" parameterType="com.diandian.model.ListsExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.diandian.model.MsgtypeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from lists
+    from msgtype
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,85 +87,94 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from lists
+    from msgtype
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from lists
+    delete from msgtype
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.diandian.model.ListsExample">
-    delete from lists
+  <delete id="deleteByExample" parameterType="com.diandian.model.MsgtypeExample">
+    delete from msgtype
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.diandian.model.Lists">
+  <insert id="insert" parameterType="com.diandian.model.Msgtype">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into lists (roomid, userid, remarkname, 
-      del)
-    values (#{roomid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{remarkname,jdbcType=VARCHAR}, 
-      #{del,jdbcType=SMALLINT})
+    insert into msgtype (type, sendtime, senduser, 
+      receiveuser, isread)
+    values (#{type,jdbcType=INTEGER}, #{sendtime,jdbcType=TIMESTAMP}, #{senduser,jdbcType=INTEGER}, 
+      #{receiveuser,jdbcType=INTEGER}, #{isread,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.diandian.model.Lists">
+  <insert id="insertSelective" parameterType="com.diandian.model.Msgtype">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into lists
+    insert into msgtype
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="roomid != null">
-        roomid,
+      <if test="type != null">
+        type,
       </if>
-      <if test="userid != null">
-        userid,
+      <if test="sendtime != null">
+        sendtime,
       </if>
-      <if test="remarkname != null">
-        remarkname,
+      <if test="senduser != null">
+        senduser,
       </if>
-      <if test="del != null">
-        del,
+      <if test="receiveuser != null">
+        receiveuser,
+      </if>
+      <if test="isread != null">
+        isread,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="roomid != null">
-        #{roomid,jdbcType=INTEGER},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
+      <if test="sendtime != null">
+        #{sendtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="remarkname != null">
-        #{remarkname,jdbcType=VARCHAR},
+      <if test="senduser != null">
+        #{senduser,jdbcType=INTEGER},
       </if>
-      <if test="del != null">
-        #{del,jdbcType=SMALLINT},
+      <if test="receiveuser != null">
+        #{receiveuser,jdbcType=INTEGER},
+      </if>
+      <if test="isread != null">
+        #{isread,jdbcType=BIT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.diandian.model.ListsExample" resultType="java.lang.Long">
-    select count(*) from lists
+  <select id="countByExample" parameterType="com.diandian.model.MsgtypeExample" resultType="java.lang.Long">
+    select count(*) from msgtype
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update lists
+    update msgtype
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.roomid != null">
-        roomid = #{record.roomid,jdbcType=INTEGER},
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.userid != null">
-        userid = #{record.userid,jdbcType=INTEGER},
+      <if test="record.sendtime != null">
+        sendtime = #{record.sendtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.remarkname != null">
-        remarkname = #{record.remarkname,jdbcType=VARCHAR},
+      <if test="record.senduser != null">
+        senduser = #{record.senduser,jdbcType=INTEGER},
       </if>
-      <if test="record.del != null">
-        del = #{record.del,jdbcType=SMALLINT},
+      <if test="record.receiveuser != null">
+        receiveuser = #{record.receiveuser,jdbcType=INTEGER},
+      </if>
+      <if test="record.isread != null">
+        isread = #{record.isread,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -172,40 +182,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update lists
+    update msgtype
     set id = #{record.id,jdbcType=INTEGER},
-      roomid = #{record.roomid,jdbcType=INTEGER},
-      userid = #{record.userid,jdbcType=INTEGER},
-      remarkname = #{record.remarkname,jdbcType=VARCHAR},
-      del = #{record.del,jdbcType=SMALLINT}
+      type = #{record.type,jdbcType=INTEGER},
+      sendtime = #{record.sendtime,jdbcType=TIMESTAMP},
+      senduser = #{record.senduser,jdbcType=INTEGER},
+      receiveuser = #{record.receiveuser,jdbcType=INTEGER},
+      isread = #{record.isread,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.diandian.model.Lists">
-    update lists
+  <update id="updateByPrimaryKeySelective" parameterType="com.diandian.model.Msgtype">
+    update msgtype
     <set>
-      <if test="roomid != null">
-        roomid = #{roomid,jdbcType=INTEGER},
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
-        userid = #{userid,jdbcType=INTEGER},
+      <if test="sendtime != null">
+        sendtime = #{sendtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="remarkname != null">
-        remarkname = #{remarkname,jdbcType=VARCHAR},
+      <if test="senduser != null">
+        senduser = #{senduser,jdbcType=INTEGER},
       </if>
-      <if test="del != null">
-        del = #{del,jdbcType=SMALLINT},
+      <if test="receiveuser != null">
+        receiveuser = #{receiveuser,jdbcType=INTEGER},
+      </if>
+      <if test="isread != null">
+        isread = #{isread,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.diandian.model.Lists">
-    update lists
-    set roomid = #{roomid,jdbcType=INTEGER},
-      userid = #{userid,jdbcType=INTEGER},
-      remarkname = #{remarkname,jdbcType=VARCHAR},
-      del = #{del,jdbcType=SMALLINT}
+  <update id="updateByPrimaryKey" parameterType="com.diandian.model.Msgtype">
+    update msgtype
+    set type = #{type,jdbcType=INTEGER},
+      sendtime = #{sendtime,jdbcType=TIMESTAMP},
+      senduser = #{senduser,jdbcType=INTEGER},
+      receiveuser = #{receiveuser,jdbcType=INTEGER},
+      isread = #{isread,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

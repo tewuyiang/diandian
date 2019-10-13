@@ -1,16 +1,17 @@
 package com.diandian.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ListsExample {
+public class RoomapplyExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ListsExample() {
+    public RoomapplyExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -164,6 +165,66 @@ public class ListsExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeidIsNull() {
+            addCriterion("typeid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidIsNotNull() {
+            addCriterion("typeid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidEqualTo(Integer value) {
+            addCriterion("typeid =", value, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidNotEqualTo(Integer value) {
+            addCriterion("typeid <>", value, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidGreaterThan(Integer value) {
+            addCriterion("typeid >", value, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("typeid >=", value, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidLessThan(Integer value) {
+            addCriterion("typeid <", value, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidLessThanOrEqualTo(Integer value) {
+            addCriterion("typeid <=", value, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidIn(List<Integer> values) {
+            addCriterion("typeid in", values, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidNotIn(List<Integer> values) {
+            addCriterion("typeid not in", values, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidBetween(Integer value1, Integer value2) {
+            addCriterion("typeid between", value1, value2, "typeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeidNotBetween(Integer value1, Integer value2) {
+            addCriterion("typeid not between", value1, value2, "typeid");
+            return (Criteria) this;
+        }
+
         public Criteria andRoomidIsNull() {
             addCriterion("roomid is null");
             return (Criteria) this;
@@ -224,193 +285,123 @@ public class ListsExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseridIsNull() {
-            addCriterion("userid is null");
+        public Criteria andDealresultIsNull() {
+            addCriterion("dealresult is null");
             return (Criteria) this;
         }
 
-        public Criteria andUseridIsNotNull() {
-            addCriterion("userid is not null");
+        public Criteria andDealresultIsNotNull() {
+            addCriterion("dealresult is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUseridEqualTo(Integer value) {
-            addCriterion("userid =", value, "userid");
+        public Criteria andDealresultEqualTo(Integer value) {
+            addCriterion("dealresult =", value, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotEqualTo(Integer value) {
-            addCriterion("userid <>", value, "userid");
+        public Criteria andDealresultNotEqualTo(Integer value) {
+            addCriterion("dealresult <>", value, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThan(Integer value) {
-            addCriterion("userid >", value, "userid");
+        public Criteria andDealresultGreaterThan(Integer value) {
+            addCriterion("dealresult >", value, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThanOrEqualTo(Integer value) {
-            addCriterion("userid >=", value, "userid");
+        public Criteria andDealresultGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dealresult >=", value, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThan(Integer value) {
-            addCriterion("userid <", value, "userid");
+        public Criteria andDealresultLessThan(Integer value) {
+            addCriterion("dealresult <", value, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThanOrEqualTo(Integer value) {
-            addCriterion("userid <=", value, "userid");
+        public Criteria andDealresultLessThanOrEqualTo(Integer value) {
+            addCriterion("dealresult <=", value, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridIn(List<Integer> values) {
-            addCriterion("userid in", values, "userid");
+        public Criteria andDealresultIn(List<Integer> values) {
+            addCriterion("dealresult in", values, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotIn(List<Integer> values) {
-            addCriterion("userid not in", values, "userid");
+        public Criteria andDealresultNotIn(List<Integer> values) {
+            addCriterion("dealresult not in", values, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridBetween(Integer value1, Integer value2) {
-            addCriterion("userid between", value1, value2, "userid");
+        public Criteria andDealresultBetween(Integer value1, Integer value2) {
+            addCriterion("dealresult between", value1, value2, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotBetween(Integer value1, Integer value2) {
-            addCriterion("userid not between", value1, value2, "userid");
+        public Criteria andDealresultNotBetween(Integer value1, Integer value2) {
+            addCriterion("dealresult not between", value1, value2, "dealresult");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameIsNull() {
-            addCriterion("remarkname is null");
+        public Criteria andDealtimeIsNull() {
+            addCriterion("dealtime is null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameIsNotNull() {
-            addCriterion("remarkname is not null");
+        public Criteria andDealtimeIsNotNull() {
+            addCriterion("dealtime is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameEqualTo(String value) {
-            addCriterion("remarkname =", value, "remarkname");
+        public Criteria andDealtimeEqualTo(Date value) {
+            addCriterion("dealtime =", value, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameNotEqualTo(String value) {
-            addCriterion("remarkname <>", value, "remarkname");
+        public Criteria andDealtimeNotEqualTo(Date value) {
+            addCriterion("dealtime <>", value, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameGreaterThan(String value) {
-            addCriterion("remarkname >", value, "remarkname");
+        public Criteria andDealtimeGreaterThan(Date value) {
+            addCriterion("dealtime >", value, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameGreaterThanOrEqualTo(String value) {
-            addCriterion("remarkname >=", value, "remarkname");
+        public Criteria andDealtimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("dealtime >=", value, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameLessThan(String value) {
-            addCriterion("remarkname <", value, "remarkname");
+        public Criteria andDealtimeLessThan(Date value) {
+            addCriterion("dealtime <", value, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameLessThanOrEqualTo(String value) {
-            addCriterion("remarkname <=", value, "remarkname");
+        public Criteria andDealtimeLessThanOrEqualTo(Date value) {
+            addCriterion("dealtime <=", value, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameLike(String value) {
-            addCriterion("remarkname like", value, "remarkname");
+        public Criteria andDealtimeIn(List<Date> values) {
+            addCriterion("dealtime in", values, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameNotLike(String value) {
-            addCriterion("remarkname not like", value, "remarkname");
+        public Criteria andDealtimeNotIn(List<Date> values) {
+            addCriterion("dealtime not in", values, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameIn(List<String> values) {
-            addCriterion("remarkname in", values, "remarkname");
+        public Criteria andDealtimeBetween(Date value1, Date value2) {
+            addCriterion("dealtime between", value1, value2, "dealtime");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameNotIn(List<String> values) {
-            addCriterion("remarkname not in", values, "remarkname");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarknameBetween(String value1, String value2) {
-            addCriterion("remarkname between", value1, value2, "remarkname");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarknameNotBetween(String value1, String value2) {
-            addCriterion("remarkname not between", value1, value2, "remarkname");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelIsNull() {
-            addCriterion("del is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelIsNotNull() {
-            addCriterion("del is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelEqualTo(Short value) {
-            addCriterion("del =", value, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelNotEqualTo(Short value) {
-            addCriterion("del <>", value, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelGreaterThan(Short value) {
-            addCriterion("del >", value, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelGreaterThanOrEqualTo(Short value) {
-            addCriterion("del >=", value, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelLessThan(Short value) {
-            addCriterion("del <", value, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelLessThanOrEqualTo(Short value) {
-            addCriterion("del <=", value, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelIn(List<Short> values) {
-            addCriterion("del in", values, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelNotIn(List<Short> values) {
-            addCriterion("del not in", values, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelBetween(Short value1, Short value2) {
-            addCriterion("del between", value1, value2, "del");
-            return (Criteria) this;
-        }
-
-        public Criteria andDelNotBetween(Short value1, Short value2) {
-            addCriterion("del not between", value1, value2, "del");
+        public Criteria andDealtimeNotBetween(Date value1, Date value2) {
+            addCriterion("dealtime not between", value1, value2, "dealtime");
             return (Criteria) this;
         }
     }

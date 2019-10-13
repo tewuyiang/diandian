@@ -3,14 +3,14 @@ package com.diandian.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListsExample {
+public class StatisticsExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ListsExample() {
+    public StatisticsExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -284,133 +284,243 @@ public class ListsExample {
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameIsNull() {
-            addCriterion("remarkname is null");
+        public Criteria andArriveIsNull() {
+            addCriterion("arrive is null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameIsNotNull() {
-            addCriterion("remarkname is not null");
+        public Criteria andArriveIsNotNull() {
+            addCriterion("arrive is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameEqualTo(String value) {
-            addCriterion("remarkname =", value, "remarkname");
+        public Criteria andArriveEqualTo(Integer value) {
+            addCriterion("arrive =", value, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameNotEqualTo(String value) {
-            addCriterion("remarkname <>", value, "remarkname");
+        public Criteria andArriveNotEqualTo(Integer value) {
+            addCriterion("arrive <>", value, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameGreaterThan(String value) {
-            addCriterion("remarkname >", value, "remarkname");
+        public Criteria andArriveGreaterThan(Integer value) {
+            addCriterion("arrive >", value, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameGreaterThanOrEqualTo(String value) {
-            addCriterion("remarkname >=", value, "remarkname");
+        public Criteria andArriveGreaterThanOrEqualTo(Integer value) {
+            addCriterion("arrive >=", value, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameLessThan(String value) {
-            addCriterion("remarkname <", value, "remarkname");
+        public Criteria andArriveLessThan(Integer value) {
+            addCriterion("arrive <", value, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameLessThanOrEqualTo(String value) {
-            addCriterion("remarkname <=", value, "remarkname");
+        public Criteria andArriveLessThanOrEqualTo(Integer value) {
+            addCriterion("arrive <=", value, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameLike(String value) {
-            addCriterion("remarkname like", value, "remarkname");
+        public Criteria andArriveIn(List<Integer> values) {
+            addCriterion("arrive in", values, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameNotLike(String value) {
-            addCriterion("remarkname not like", value, "remarkname");
+        public Criteria andArriveNotIn(List<Integer> values) {
+            addCriterion("arrive not in", values, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameIn(List<String> values) {
-            addCriterion("remarkname in", values, "remarkname");
+        public Criteria andArriveBetween(Integer value1, Integer value2) {
+            addCriterion("arrive between", value1, value2, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameNotIn(List<String> values) {
-            addCriterion("remarkname not in", values, "remarkname");
+        public Criteria andArriveNotBetween(Integer value1, Integer value2) {
+            addCriterion("arrive not between", value1, value2, "arrive");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameBetween(String value1, String value2) {
-            addCriterion("remarkname between", value1, value2, "remarkname");
+        public Criteria andLateIsNull() {
+            addCriterion("late is null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarknameNotBetween(String value1, String value2) {
-            addCriterion("remarkname not between", value1, value2, "remarkname");
+        public Criteria andLateIsNotNull() {
+            addCriterion("late is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDelIsNull() {
-            addCriterion("del is null");
+        public Criteria andLateEqualTo(Integer value) {
+            addCriterion("late =", value, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelIsNotNull() {
-            addCriterion("del is not null");
+        public Criteria andLateNotEqualTo(Integer value) {
+            addCriterion("late <>", value, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelEqualTo(Short value) {
-            addCriterion("del =", value, "del");
+        public Criteria andLateGreaterThan(Integer value) {
+            addCriterion("late >", value, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelNotEqualTo(Short value) {
-            addCriterion("del <>", value, "del");
+        public Criteria andLateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("late >=", value, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelGreaterThan(Short value) {
-            addCriterion("del >", value, "del");
+        public Criteria andLateLessThan(Integer value) {
+            addCriterion("late <", value, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelGreaterThanOrEqualTo(Short value) {
-            addCriterion("del >=", value, "del");
+        public Criteria andLateLessThanOrEqualTo(Integer value) {
+            addCriterion("late <=", value, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelLessThan(Short value) {
-            addCriterion("del <", value, "del");
+        public Criteria andLateIn(List<Integer> values) {
+            addCriterion("late in", values, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelLessThanOrEqualTo(Short value) {
-            addCriterion("del <=", value, "del");
+        public Criteria andLateNotIn(List<Integer> values) {
+            addCriterion("late not in", values, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelIn(List<Short> values) {
-            addCriterion("del in", values, "del");
+        public Criteria andLateBetween(Integer value1, Integer value2) {
+            addCriterion("late between", value1, value2, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelNotIn(List<Short> values) {
-            addCriterion("del not in", values, "del");
+        public Criteria andLateNotBetween(Integer value1, Integer value2) {
+            addCriterion("late not between", value1, value2, "late");
             return (Criteria) this;
         }
 
-        public Criteria andDelBetween(Short value1, Short value2) {
-            addCriterion("del between", value1, value2, "del");
+        public Criteria andLeavedIsNull() {
+            addCriterion("leaved is null");
             return (Criteria) this;
         }
 
-        public Criteria andDelNotBetween(Short value1, Short value2) {
-            addCriterion("del not between", value1, value2, "del");
+        public Criteria andLeavedIsNotNull() {
+            addCriterion("leaved is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedEqualTo(Integer value) {
+            addCriterion("leaved =", value, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedNotEqualTo(Integer value) {
+            addCriterion("leaved <>", value, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedGreaterThan(Integer value) {
+            addCriterion("leaved >", value, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedGreaterThanOrEqualTo(Integer value) {
+            addCriterion("leaved >=", value, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedLessThan(Integer value) {
+            addCriterion("leaved <", value, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedLessThanOrEqualTo(Integer value) {
+            addCriterion("leaved <=", value, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedIn(List<Integer> values) {
+            addCriterion("leaved in", values, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedNotIn(List<Integer> values) {
+            addCriterion("leaved not in", values, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedBetween(Integer value1, Integer value2) {
+            addCriterion("leaved between", value1, value2, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedNotBetween(Integer value1, Integer value2) {
+            addCriterion("leaved not between", value1, value2, "leaved");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeIsNull() {
+            addCriterion("absentee is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeIsNotNull() {
+            addCriterion("absentee is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeEqualTo(Integer value) {
+            addCriterion("absentee =", value, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeNotEqualTo(Integer value) {
+            addCriterion("absentee <>", value, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeGreaterThan(Integer value) {
+            addCriterion("absentee >", value, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("absentee >=", value, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeLessThan(Integer value) {
+            addCriterion("absentee <", value, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeLessThanOrEqualTo(Integer value) {
+            addCriterion("absentee <=", value, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeIn(List<Integer> values) {
+            addCriterion("absentee in", values, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeNotIn(List<Integer> values) {
+            addCriterion("absentee not in", values, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeBetween(Integer value1, Integer value2) {
+            addCriterion("absentee between", value1, value2, "absentee");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeNotBetween(Integer value1, Integer value2) {
+            addCriterion("absentee not between", value1, value2, "absentee");
             return (Criteria) this;
         }
     }

@@ -73,4 +73,12 @@ public interface RoomService {
      * @return
      */
     Integer deleteUserToRoom(Integer roomId, Integer userId) throws Exception;
+
+    /**
+     * 获取房间考勤统计情况
+     * 每个学生迟到，旷课，请假...的次数
+     * @return
+     * @throws Exception
+     */
+    RoomCustom getStudentStatisticsInRoom(Integer roomId) throws Exception;
 }
