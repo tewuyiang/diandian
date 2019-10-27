@@ -60,4 +60,18 @@ public class SingledetailController {
     }
 
 
+    /**
+     * 修改学生某一次考勤的考勤状态
+     * @param singledetailId
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @PostMapping("/udpateStatus/{singledetailId}/{status}")
+    public R udpateStudentStatus(@PathVariable("singledetailId") Integer singledetailId,
+                                 @PathVariable("status") Short status)throws Exception {
+        return singledetailService.updateStudentStatus(singledetailId, status) > 0 ? R.ok() : R.error();
+    }
+
+
 }

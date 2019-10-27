@@ -1,20 +1,16 @@
-package com.diandian.controller.attendance.websocket;
+package com.diandian.controller.attendance.continuous;
 
 import com.alibaba.fastjson.JSONObject;
 import com.diandian.constants.AttConstant;
-import com.diandian.exception.ParamException;
-import com.diandian.utils.JMPackage.MessageUtil;
 import com.diandian.utils.attendance.CheckUtil;
 import com.diandian.utils.attendance.MapPoint;
 import com.diandian.utils.attendance.MessageUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Date;
@@ -24,7 +20,7 @@ import java.util.Map;
  * 被考勤用户点击签到后的处理类
  */
 
-@ServerEndpoint(value = "/Attendance/checkOne", configurator = SpringConfigurator.class)
+@ServerEndpoint(value = "/attendance/continuous/checkOne", configurator = SpringConfigurator.class)
 public class OneStudentCheck {
     // 用户当前与服务器的会话
     private Session session;

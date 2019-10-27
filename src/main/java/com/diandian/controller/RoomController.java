@@ -136,9 +136,10 @@ public class RoomController {
      */
     @ResponseBody
     @RequestMapping("/getStudentStatistics/{roomId}")
-    public R getStudentStatisticsInRoom(@PathVariable("roomId") Integer roomId) throws Exception{
+    public R getStatisticsInRoom(@PathVariable("roomId") Integer roomId) throws Exception{
         RoomCustom room = roomService.getStudentStatisticsInRoom(roomId);
-        return room == null || room.getAttTimes() == null ? R.no() : R.ok(room);
+        return room == null || room.getAttTimes() == null || room.getAttTimes() == 0
+                ? R.no() : R.ok(room);
     }
 
 }

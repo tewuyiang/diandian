@@ -13,8 +13,8 @@ public interface FileConstants {
 
 
     /**
-     * 房间二维码信息的公共部分
+     *
      */
-    String QRCODE_MSG = "点点考勤房间";
+    String QRCODE_MSG = "";
 
 }

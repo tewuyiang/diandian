@@ -12,13 +12,12 @@ import com.diandian.model.custom.RoomCustom;
 import com.diandian.model.custom.RoomdetailCustom;
 import com.diandian.model.custom.StatisticsCustom;
 import com.diandian.model.custom.UserCustom;
-import com.diandian.service.QrcodeService;
+import com.diandian.service.MessageService;
 import com.diandian.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,11 +37,11 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private UserCustomMapper userCustomMapper;
     @Autowired
-    private QrcodeService qrcodeService;
-    @Autowired
     private RoomdetailCustomMapper roomdetailCustomMapper;
     @Autowired
     private StatisticsCustomMapper statisticsCustomMapper;
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 根据房间号查询房间内的所有用户
@@ -182,6 +181,7 @@ public class RoomServiceImpl implements RoomService {
 
     /**
      * 加入考勤房间
+     * 若房间需要审核，则用户新建一条申请消息
      * @param lists
      * @return
      * @throws Exception
@@ -201,6 +201,15 @@ public class RoomServiceImpl implements RoomService {
         if (r == null) {
             throw new ParamException("房间信息获取失败！");
         }
+        System.out.println(lists.getRemarkname());
+        // 判断房间是否需要审核
+        if (r.getChecked() == 1) {
+            // 需要审核，则创建一条申请加入房间的消息，不直接加入
+            return messageService.createJoinRoomMsgByNumber(lists.getUserid(),
+                    r.getRoomnumber(), lists.getRemarkname());
+        }
+
+
         // 查询用户创建的所有房间
         // 用户无法加入自己创建的房间
         List<RoomCustom> rooms1 = userCustomMapper.selectRoomsByUserId(lists.getUserid());

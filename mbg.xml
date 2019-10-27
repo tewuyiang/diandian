@@ -53,18 +53,18 @@
 		<!--<table schema="" tableName="roomapply" domainObjectName="Roomapply">-->
 			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 		<!--</table>-->
-		<!--<table schema="" tableName="msgtype" domainObjectName="Msgtype">-->
-			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-		<!--</table>-->
+		<table schema="" tableName="msgtype" domainObjectName="Msgtype">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
 		<!--<table schema="" tableName="qrcode" domainObjectName="Qrcode">-->
 			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 		<!--</table>-->
 		<!--<table schema="" tableName="lists" domainObjectName="Lists">-->
 			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 		<!--</table>-->
-		<table schema="" tableName="room" domainObjectName="Room">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
-		</table>
+		<!--<table schema="" tableName="room" domainObjectName="Room">-->
+			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+		<!--</table>-->
 		<!--<table schema="" tableName="roomdetail" domainObjectName="Roomdetail">-->
 			<!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 		<!--</table>-->

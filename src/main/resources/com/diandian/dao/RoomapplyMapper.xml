@@ -7,6 +7,7 @@
     <result column="roomid" jdbcType="INTEGER" property="roomid" />
     <result column="dealresult" jdbcType="INTEGER" property="dealresult" />
     <result column="dealtime" jdbcType="TIMESTAMP" property="dealtime" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, typeid, roomid, dealresult, dealtime
+    id, typeid, roomid, dealresult, dealtime, remarks
   </sql>
   <select id="selectByExample" parameterType="com.diandian.model.RoomapplyExample" resultMap="BaseResultMap">
     select
@@ -104,9 +105,9 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into roomapply (typeid, roomid, dealresult, 
-      dealtime)
+      dealtime, remarks)
     values (#{typeid,jdbcType=INTEGER}, #{roomid,jdbcType=INTEGER}, #{dealresult,jdbcType=INTEGER}, 
-      #{dealtime,jdbcType=TIMESTAMP})
+      #{dealtime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.diandian.model.Roomapply">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -126,6 +127,9 @@
       <if test="dealtime != null">
         dealtime,
       </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="typeid != null">
@@ -139,6 +143,9 @@
       </if>
       <if test="dealtime != null">
         #{dealtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +173,9 @@
       <if test="record.dealtime != null">
         dealtime = #{record.dealtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.remarks != null">
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -177,7 +187,8 @@
       typeid = #{record.typeid,jdbcType=INTEGER},
       roomid = #{record.roomid,jdbcType=INTEGER},
       dealresult = #{record.dealresult,jdbcType=INTEGER},
-      dealtime = #{record.dealtime,jdbcType=TIMESTAMP}
+      dealtime = #{record.dealtime,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,6 +208,9 @@
       <if test="dealtime != null">
         dealtime = #{dealtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -205,7 +219,8 @@
     set typeid = #{typeid,jdbcType=INTEGER},
       roomid = #{roomid,jdbcType=INTEGER},
       dealresult = #{dealresult,jdbcType=INTEGER},
-      dealtime = #{dealtime,jdbcType=TIMESTAMP}
+      dealtime = #{dealtime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

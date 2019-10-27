@@ -1,4 +1,4 @@
-package com.diandian.controller.attendance.websocket;
+package com.diandian.controller.attendance.continuous;
 
 import com.diandian.constants.AttConstant;
 

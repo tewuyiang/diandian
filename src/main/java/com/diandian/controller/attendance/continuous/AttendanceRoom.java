@@ -1,4 +1,4 @@
-package com.diandian.controller.attendance.websocket;
+package com.diandian.controller.attendance.continuous;
 
 import com.alibaba.fastjson.JSONObject;
 import com.diandian.constants.AttConstant;
@@ -9,12 +9,10 @@ import com.diandian.model.custom.UserCustom;
 import com.diandian.service.RoomService;
 import com.diandian.service.RoomdetailService;
 import com.diandian.service.UserdetailService;
-import com.diandian.utils.CloseUtil;
 import com.diandian.utils.attendance.CheckUtil;
 import com.diandian.utils.attendance.MapPoint;
 import com.diandian.utils.attendance.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import javax.websocket.OnClose;
@@ -34,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 老师点击开始考勤的处理类
  * configurator = SpringConfigurator.class是为了使该类可以通过Spring注入。
  */
-@ServerEndpoint(value = "/Attendance/start",configurator = SpringConfigurator.class)
+@ServerEndpoint(value = "/attendance/continuous/start",configurator = SpringConfigurator.class)
 public class AttendanceRoom {
     // 存储所有考勤房间，一个AttendanceRoom对象表示一个房间
     public static Map<Integer, AttendanceRoom> roomMap = new ConcurrentHashMap<>();

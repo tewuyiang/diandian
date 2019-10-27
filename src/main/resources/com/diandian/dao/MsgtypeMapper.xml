@@ -7,7 +7,7 @@
     <result column="sendtime" jdbcType="TIMESTAMP" property="sendtime" />
     <result column="senduser" jdbcType="INTEGER" property="senduser" />
     <result column="receiveuser" jdbcType="INTEGER" property="receiveuser" />
-    <result column="isread" jdbcType="BIT" property="isread" />
+    <result column="isread" jdbcType="INTEGER" property="isread" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -107,7 +107,7 @@
     insert into msgtype (type, sendtime, senduser, 
       receiveuser, isread)
     values (#{type,jdbcType=INTEGER}, #{sendtime,jdbcType=TIMESTAMP}, #{senduser,jdbcType=INTEGER}, 
-      #{receiveuser,jdbcType=INTEGER}, #{isread,jdbcType=BIT})
+      #{receiveuser,jdbcType=INTEGER}, #{isread,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.diandian.model.Msgtype">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -145,7 +145,7 @@
         #{receiveuser,jdbcType=INTEGER},
       </if>
       <if test="isread != null">
-        #{isread,jdbcType=BIT},
+        #{isread,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -174,7 +174,7 @@
         receiveuser = #{record.receiveuser,jdbcType=INTEGER},
       </if>
       <if test="record.isread != null">
-        isread = #{record.isread,jdbcType=BIT},
+        isread = #{record.isread,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -188,7 +188,7 @@
       sendtime = #{record.sendtime,jdbcType=TIMESTAMP},
       senduser = #{record.senduser,jdbcType=INTEGER},
       receiveuser = #{record.receiveuser,jdbcType=INTEGER},
-      isread = #{record.isread,jdbcType=BIT}
+      isread = #{record.isread,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -209,7 +209,7 @@
         receiveuser = #{receiveuser,jdbcType=INTEGER},
       </if>
       <if test="isread != null">
-        isread = #{isread,jdbcType=BIT},
+        isread = #{isread,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -220,7 +220,7 @@
       sendtime = #{sendtime,jdbcType=TIMESTAMP},
       senduser = #{senduser,jdbcType=INTEGER},
       receiveuser = #{receiveuser,jdbcType=INTEGER},
-      isread = #{isread,jdbcType=BIT}
+      isread = #{isread,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

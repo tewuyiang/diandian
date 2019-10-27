@@ -1,10 +1,13 @@
 package com.diandian.controller;
 
-import com.diandian.model.custom.RoomapplyCostom;
+import com.diandian.model.Lists;
+import com.diandian.model.custom.MsgtypeCustom;
 import com.diandian.service.MessageService;
 import com.diandian.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 消息控制器
@@ -18,27 +21,71 @@ public class MessageController {
     private MessageService messageService;
 
     /**
-     * 根据消息类型表id获取消息记录
-     * @return
-     * @throws Exception
-     */
-//    @ResponseBody
-//    @GetMapping("/getMessageByTypeId/{msgId}")
-//    public R getRoomApplyByMsgId(@PathVariable("msgId") Integer msgId) throws Exception{
-////        RoomapplyCostom roomapplyCostom =  messageService.selectRoomApplyByMsgId(msgId);
-////        return roomapplyCostom == null ? R.no("无此消息!") : R.ok(roomapplyCostom);
-//    }
-
-
-    /**
-     * 获取用户申请加入房间的消息
+     * 创建一条申请加入房间的消息
      * 根据房间的number
      */
     @ResponseBody
-    @GetMapping("/applyJoinRoomByNumber/{userId}/{number}")
+    @PostMapping("/applyJoinRoomByNumber/{userId}/{number}/{remarkname}")
     public R applyJoinRoomByNumber(@PathVariable("userId") Integer userId,
-                                   @PathVariable("number") String number) throws Exception{
-        return messageService.createJoinRoomMsgByNumber(userId, number) > 0 ? R.ok() : R.error("发生异常");
+                                   @PathVariable("number") String number,
+                                   @PathVariable("remarkname") String remarks) throws Exception {
+        return messageService.createJoinRoomMsgByNumber(userId, number, remarks) > 0 ?
+                R.ok() : R.error("发生异常");
+    }
+
+
+    /**
+     * 获取所有申请加入我的房间的消息
+     * @param userId
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getApplyMyRoomsMsgs/{userId}")
+    public R getApplyMyRoomsMsgs(@PathVariable("userId") Integer userId) throws Exception {
+        List<MsgtypeCustom> messages = messageService.selectApplyMyRoomsMessage(userId);
+        if (messages == null || messages.size() <= 0) {
+            return R.no();
+        }
+        return R.ok(messages);
+    }
+
+
+    /**
+     * 处理房间申请请求
+     * @param msgId 消息id
+     * @param result 处理结果
+     * @throws Exception
+     */
+    @ResponseBody
+    @PostMapping("/dealRoomapplyMessage")
+    public R dealRoomapplyMessage(Integer msgId, Integer result)throws Exception {
+        return messageService.updateAfterDealRoomapply(msgId,result) > 0 ? R.ok() : R.error();
+    }
+
+
+    /**
+     * 接收消息
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @GetMapping("/receiveMessage/{userId}")
+    public R receiveMessage(@PathVariable("userId") Integer userId)throws Exception {
+        List<MsgtypeCustom> messages;
+        // 加上对象所，防止多个请求同时进行
+        synchronized (this) {
+            // 简单长轮询
+            while (true) {
+                messages = messageService.updateUnreadMessageByUserId(userId);
+                if (messages == null || messages.size() <= 0) {
+                    // 若无新消息，则线程休眠5秒后，再次查询，直到有消息
+                    Thread.sleep(3000);
+                } else {
+                    break;
+                }
+            }
+        }
+        return R.ok(messages);
     }
 
 }

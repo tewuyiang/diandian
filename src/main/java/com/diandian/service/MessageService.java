@@ -2,6 +2,10 @@ package com.diandian.service;
 
 import com.diandian.model.Msgtype;
 import com.diandian.model.Roomapply;
+import com.diandian.model.custom.MsgtypeCustom;
+import com.diandian.utils.R;
+
+import java.util.List;
 
 public interface MessageService {
 
@@ -11,7 +15,7 @@ public interface MessageService {
      * @param number
      * @return
      */
-    Integer createJoinRoomMsgByNumber(Integer userId, String number) throws Exception;
+    Integer createJoinRoomMsgByNumber(Integer userId, String number, String remarks) throws Exception;
 
 
     /**
@@ -30,4 +34,30 @@ public interface MessageService {
      * @throws Exception
      */
     Integer insertRoomApply(Roomapply roomapply) throws Exception;
+
+
+    /**
+     * 获取所有申请加入我的房间的消息
+     * @param userId
+     * @return
+     */
+    List<MsgtypeCustom> selectApplyMyRoomsMessage(Integer userId) throws Exception;
+
+
+    /**
+     * 处理房间申请请求
+     * @param msgId 消息id
+     * @param result 处理结果
+     * @throws Exception
+     */
+    Integer updateAfterDealRoomapply(Integer msgId, Integer result) throws Exception;
+
+
+    /**
+     * 获取用户未读消息
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    List<MsgtypeCustom> updateUnreadMessageByUserId(Integer userId) throws Exception;
 }

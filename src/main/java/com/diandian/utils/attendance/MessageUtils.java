@@ -29,7 +29,7 @@ public class MessageUtils {
      * @param <T>
      * @return
      */
-    public static <T> JSONObject messageToJson(String type, String status, T data){
+    public static <T> JSONObject messageToJson(String type, Integer status, T data){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", type);
         jsonObject.put("status", status);
@@ -50,12 +50,13 @@ public class MessageUtils {
 
     /**
      * 将消息封装成json对象，并包含学生的id
+     *
      * @return
      */
-    public static <T1, T2> JSONObject messageToJson(String type, String status, T1 data, T2 studentId) {
+    public static <T1> JSONObject messageToJson(String type, Integer status, T1 data, Integer studentId) {
         JSONObject jsonObject = messageToJson(type, status, data);
         jsonObject.put("studentId", studentId);
-        return  jsonObject;
+        return jsonObject;
     }
 
 }

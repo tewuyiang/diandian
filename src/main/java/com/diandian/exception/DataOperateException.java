@@ -6,7 +6,7 @@ package com.diandian.exception;
 public class DataOperateException extends Exception{
     // 错误信息
     private String message = "数据操作异常！";
-    private Integer code = 0;
+    private Integer code = -1;
 
     public DataOperateException() {
     }

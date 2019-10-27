@@ -1,7 +1,5 @@
 package com.diandian.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 public class Roomapply {
@@ -13,8 +11,9 @@ public class Roomapply {
 
     private Integer dealresult;
 
-    @JsonFormat(pattern = "yy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date dealtime;
+
+    private String remarks;
 
     public Integer getId() {
         return id;
@@ -54,5 +53,13 @@ public class Roomapply {
 
     public void setDealtime(Date dealtime) {
         this.dealtime = dealtime;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks == null ? null : remarks.trim();
     }
 }

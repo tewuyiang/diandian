@@ -17,15 +17,13 @@
 			<id column="listid" property="id"></id>
 			<result column="remarkname" property="remarkname"/>
 			<result column="roomid" property="roomid"/>
-			<result column="statu" property="statu"/>
 		</association>
 	</resultMap>
     <select id="selectUsersInRoomByRoomId" parameterType="Integer" resultMap="selectUserByRoomIdMap">
         select user.*,
 			 lists.id listid,
 			 lists.remarkname,
-			 lists.roomid,
-			 lists.statu
+			 lists.roomid
 		from lists, user
 		where lists.roomid = #{value} and
 			  lists.del = 1 and

@@ -7,7 +7,7 @@ public class ParamException extends RuntimeException {
 
     // 错误信息
     private String message = "信息获取异常！";
-    private Integer code = 0;
+    private Integer code = -1;
 
     public ParamException() {
     }

@@ -1,7 +1,5 @@
 package com.diandian.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 public class Msgtype {
@@ -9,14 +7,13 @@ public class Msgtype {
 
     private Integer type;
 
-    @JsonFormat(pattern = "yy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date sendtime;
 
     private Integer senduser;
 
     private Integer receiveuser;
 
-    private Boolean isread;
+    private Integer isread;
 
     public Integer getId() {
         return id;
@@ -58,11 +55,11 @@ public class Msgtype {
         this.receiveuser = receiveuser;
     }
 
-    public Boolean getIsread() {
+    public Integer getIsread() {
         return isread;
     }
 
-    public void setIsread(Boolean isread) {
+    public void setIsread(Integer isread) {
         this.isread = isread;
     }
 }

@@ -1,6 +1,8 @@
 package com.diandian.service;
 
+import com.diandian.model.Singledetail;
 import com.diandian.model.custom.SingledetailCustom;
+import com.diandian.utils.R;
 
 import java.util.List;
 
@@ -24,4 +26,21 @@ public interface SingledetailService {
      * @throws Exception
      */
     List<SingledetailCustom> selectOnStudentDetails(Integer roomId, Integer userId) throws Exception;
+
+
+    /**
+     * 插入一条新的考勤记录
+     * @param singledetail
+     * @return
+     * @throws Exception
+     */
+    Integer insertSingledetail(Singledetail singledetail) throws Exception;
+
+
+    /**
+     * 修改学生的某次考勤状态
+     * @param singledetailId
+     * @return
+     */
+    Integer updateStudentStatus(Integer singledetailId, Short status) throws Exception;
 }

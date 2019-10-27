@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.diandian.dao.custom.MsgtypeCustomMapper">
+
+    <select id="selectMsgAndRoomApplyByThreeId" parameterType="Integer"
+			resultMap="selectMsgAndRoomApplyMap">
+        select msgtype.*,
+			 roomapply.roomid,
+			 roomapply.id roomapplyid,
+			 roomapply.dealtime,
+			 roomapply.dealresult,
+			 roomapply.remarks,
+			 room.roomnumber,
+			 room.rname
+		from msgtype,roomapply, room
+		where msgtype.senduser = #{sendId} and
+			msgtype.receiveuser = #{receiveId} and
+			msgtype.type = 1 and
+			roomapply.roomid = #{roomId} and
+			roomapply.typeid = msgtype.id and
+			roomapply.roomid = room.id
+    </select>
+	<select id="selectApplyRoomsByUserId" parameterType="Integer"
+			resultMap="selectMsgAndRoomApplyMap">
+		select msgtype.*,
+			 roomapply.roomid,
+			 roomapply.id roomapplyid,
+			 roomapply.dealtime,
+			 roomapply.dealresult,
+			 roomapply.remarks,
+			 room.rname,
+			 room.roomnumber
+		from msgtype,roomapply,room
+		where msgtype.receiveuser = #{value } and
+			msgtype.type = 1 and
+			roomapply.typeid = msgtype.id and
+			roomapply.roomid = room.id
+	</select>
+	<resultMap id="selectMsgAndRoomApplyMap" type="MsgtypeCustom">
+		<id property="id" column="id"/>
+		<result property="type" column="type" />
+		<result property="sendtime" column="sendtime" />
+		<result property="senduser" column="senduser" />
+		<result property="receiveuser" column="receiveuser" />
+		<result property="isread" column="isread" />
+		<association property="roomapply" javaType="roomapplyCustom">
+			<id property="id" column="roomapplyid"/>
+			<result property="roomid" column="roomid" />
+			<result property="dealtime" column="dealtime" />
+			<result property="dealresult" column="dealresult" />
+			<result property="typeid" column="id" />
+			<result property="remarks" column="remarks" />
+            <result property="rname" column="rname" />
+            <result property="roomnumber" column="roomnumber" />
+		</association>
+	</resultMap>
+
+</mapper>

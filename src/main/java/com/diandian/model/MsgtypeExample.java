@@ -415,52 +415,52 @@ public class MsgtypeExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsreadEqualTo(Boolean value) {
+        public Criteria andIsreadEqualTo(Integer value) {
             addCriterion("isread =", value, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadNotEqualTo(Boolean value) {
+        public Criteria andIsreadNotEqualTo(Integer value) {
             addCriterion("isread <>", value, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadGreaterThan(Boolean value) {
+        public Criteria andIsreadGreaterThan(Integer value) {
             addCriterion("isread >", value, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andIsreadGreaterThanOrEqualTo(Integer value) {
             addCriterion("isread >=", value, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadLessThan(Boolean value) {
+        public Criteria andIsreadLessThan(Integer value) {
             addCriterion("isread <", value, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadLessThanOrEqualTo(Boolean value) {
+        public Criteria andIsreadLessThanOrEqualTo(Integer value) {
             addCriterion("isread <=", value, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadIn(List<Boolean> values) {
+        public Criteria andIsreadIn(List<Integer> values) {
             addCriterion("isread in", values, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadNotIn(List<Boolean> values) {
+        public Criteria andIsreadNotIn(List<Integer> values) {
             addCriterion("isread not in", values, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsreadBetween(Integer value1, Integer value2) {
             addCriterion("isread between", value1, value2, "isread");
             return (Criteria) this;
         }
 
-        public Criteria andIsreadNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsreadNotBetween(Integer value1, Integer value2) {
             addCriterion("isread not between", value1, value2, "isread");
             return (Criteria) this;
         }
