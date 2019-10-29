@@ -3,6 +3,7 @@ package com.diandian.aspect;
 import com.diandian.exception.ParamException;
 import com.diandian.model.User;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

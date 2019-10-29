@@ -11,37 +11,11 @@ public class CheckUtil {
 	private static final double RADIAN = Math.PI / 180.00D;
 	private static final double HALF = 0.5D;
 
-	public static boolean checkMap(String latitude, String longitude, String othermap, double d) {
-		System.out.println("自己地址信息；"+latitude+"\t"+longitude);
-		System.out.println("他人地址信息："+othermap);
-		// 判断两个地址是否为null
-		if (latitude == null || latitude.length() == 0 || StringUtils.isBlank(latitude) || longitude == null
-				|| longitude.length() == 0 || StringUtils.isBlank(longitude) || othermap == null
-				|| othermap.length() == 0 || StringUtils.isBlank(othermap))
-			return false;
-
-		double mylatitude = Double.parseDouble(latitude);
-		double mylongitude = Double.parseDouble(longitude);
-		String[] str = othermap.split("|");
-		double otherlatitude = Double.parseDouble(str[0]);
-		double otherlongitude = Double.parseDouble(str[1]);
-		// 比较两个地之间的差距
-		Point point1 = new MapPoint(mylatitude, mylongitude);
-		Point point2 = new MapPoint(otherlatitude, otherlongitude);
-		double destance = distanceOf(point1, point2);
-		System.out.println("距离："+destance);
-		// 比较两个地之间的差距
-		if(destance > d)
-			return false;
-		else
-			return true;
-	}
-
-	public static double distanceOf(Point point1, Point point2) {
-		double lat1 = point1.getX();
-		double lon1 = point1.getY();
-		double lat2 = point2.getX();
-		double lon2 = point2.getY();
+	public static double distanceOf(MapPoint point1, MapPoint point2) {
+		double lat1 = point1.getLatitude();
+		double lon1 = point1.getLongitude();
+		double lat2 = point2.getLatitude();
+		double lon2 = point2.getLongitude();
 		double x, y, a, b, distance;
 		lat1 *= RADIAN;
 		lat2 *= RADIAN;
@@ -52,5 +26,28 @@ public class CheckUtil {
 		b = Math.sin(y * HALF);
 		distance = EARTH_RADIUS * Math.asin(Math.sqrt(a * a + Math.cos(lat1) * Math.cos(lat2) * b * b)) / HALF;
 		return new BigDecimal(distance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+
+	public static double getDistance(Double lat1,Double lng1,Double lat2,Double lng2) {
+		// 经纬度（角度）转弧度。弧度用作参数，以调用Math.cos和Math.sin
+		double radiansAX = Math.toRadians(lng1); // A经弧度
+		double radiansAY = Math.toRadians(lat1); // A纬弧度
+		double radiansBX = Math.toRadians(lng2); // B经弧度
+		double radiansBY = Math.toRadians(lat2); // B纬弧度
+
+		double cos = Math.cos(radiansAY) * Math.cos(radiansBY) * Math.cos(radiansAX - radiansBX)
+				+ Math.sin(radiansAY) * Math.sin(radiansBY);
+		double acos = Math.acos(cos); // 反余弦值
+		return EARTH_RADIUS * acos; // 最终结果
+	}
+
+	public static void main(String[] args) {
+		double v1 = distanceOf(new MapPoint(28.68202, 115.85794),
+				new MapPoint(28.753306, 115.861918));
+		System.out.println(v1);
+
+		double distance = getDistance(28.68202, 115.85794,
+                28.753306, 115.861918);
+		System.out.println("距离" + distance  + "米");
 	}
 }

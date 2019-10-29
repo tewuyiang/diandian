@@ -24,9 +24,9 @@ public class AnalysisCode {
 		}
 
 		// 小程序的id
-		String wxspAppid = "wx40729f9bedd7140d";
+		String wxspAppid = "wx516f5bc610317e15";
 		// 小程序的安全密匙
-		String wxspSecret = "88bb9194d6f95ad343caec11a4b556d7";
+		String wxspSecret = "b02e2438fdee6ebe5ab40000dfbf7947";
 		//
 		String grant_type = "authorization_code";
 

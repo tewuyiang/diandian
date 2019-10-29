@@ -41,11 +41,12 @@ public class StudentSignIn {
     public String checkStudent(Integer roomId, Integer studentId,
                                Double latitude, Double longitude, HttpServletResponse response) {
         JSONObject message = null;
-
+        System.out.println("学生签到:"+roomId + "," + studentId + "," + latitude + "," + longitude);
         // 判断参数是否正确接受
         if (roomId == null || studentId == null || latitude == null || longitude == null) {
             message = MessageUtils.messageToJson(AttConstant.STATUS,
                     AttConstant.FAILURE, "信息获取异常！");
+            System.out.println("1:信息获取异常");
             return message.toJSONString();
         }
 
@@ -55,6 +56,7 @@ public class StudentSignIn {
         if (teacherCheck == null || teacherCheck.getTeacherLocation() == null) {
             message = MessageUtils.messageToJson(AttConstant.STATUS,
                     AttConstant.FAILURE, "考勤未开始！");
+            System.out.println("2:考勤未开始");
             return message.toJSONString();
         }
 
@@ -63,6 +65,7 @@ public class StudentSignIn {
         if (studentData == null) {
             message = MessageUtils.messageToJson(AttConstant.STATUS,
                     AttConstant.FAILURE, "您不在此房间中！");
+            System.out.println("3:您不在此房间中");
             return message.toJSONString();
         }
         // 若以上条件均不满足，表示数据正常
@@ -89,6 +92,7 @@ public class StudentSignIn {
             // 返回重复操作状态码，并直接返回用户的考勤状态
             message = MessageUtils.messageToJson(AttConstant.STATUS,
                     AttConstant.REPEAT, studentData.getStatus(), studentData.getStudentId());
+            System.out.println("4:已经签到");
             return message.toJSONString();
         }
 
@@ -110,11 +114,13 @@ public class StudentSignIn {
                 // 封装提示信息
                 message = MessageUtils.messageToJson(AttConstant.STATUS,
                         AttConstant.SUCCESS, AttConstant.ARRIVE, studentData.getStudentId());
+                System.out.println("5:到达");
             } else {
                 studentData.setStatus(AttConstant.LATE);
                 // 封装提示信息
                 message = MessageUtils.messageToJson(AttConstant.STATUS,
                         AttConstant.SUCCESS, AttConstant.LATE, studentData.getStudentId());
+                System.out.println("6:迟到");
             }
             // 修改用户的签到时间
             studentData.setAttTime(new Date());
@@ -125,6 +131,7 @@ public class StudentSignIn {
             // 则无法成功签到，返回提示信息
             message = MessageUtils.messageToJson(AttConstant.STATUS,
                     AttConstant.FAILURE, "您不在考勤距离内,请重试！", studentData.getStudentId());
+            System.out.println("7:不在距离内");
         }
         return message.toJSONString();
     }

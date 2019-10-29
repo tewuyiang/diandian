@@ -42,6 +42,7 @@ public class RoomController {
     @ResponseBody
     @GetMapping("/getRoomById/{roomId}")
     public R getRoomById(@PathVariable("roomId") Integer roomId) throws Exception {
+        System.out.println("aaa");
         Room room = roomService.selectRoomByRoomId(roomId);
         return room == null ? R.no("房间不存在！") : R.ok(room);
     }

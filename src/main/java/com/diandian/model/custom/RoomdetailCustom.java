@@ -1,5 +1,7 @@
 package com.diandian.model.custom;
 
-public class RoomdetailCustom {
+import com.diandian.model.Roomdetail;
+
+public class RoomdetailCustom extends Roomdetail {
 
 }
