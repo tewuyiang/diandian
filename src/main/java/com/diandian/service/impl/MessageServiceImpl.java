@@ -191,6 +191,12 @@ public class MessageServiceImpl implements MessageService {
         if (msg == null) {
             throw new ParamException();
         }
+        // 将消息消跟新为已经阅读状态
+        msg.setIsread(1);
+        if (msgtypeMapper.updateByPrimaryKey(msg) <= 0) {
+            throw new DataOperateException();
+        }
+
         // 获取申请消息明细
         Roomapply roomapply = roomapplyCustomMapper.selectByTypeId(msg.getId());
 
@@ -212,6 +218,7 @@ public class MessageServiceImpl implements MessageService {
         if (roomapplyMapper.updateByPrimaryKeySelective(roomapply) <= 0) {
             throw new DataOperateException();
         }
+
         return 1;
     }
 
