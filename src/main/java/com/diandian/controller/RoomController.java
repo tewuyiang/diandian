@@ -112,7 +112,8 @@ public class RoomController {
     @ResponseBody
     @PostMapping("/userJoinRoom")
     public R userJoinRoom(Lists lists) throws Exception{
-        return roomService.insertLists(lists) > 0 ? R.ok() : R.error();
+        Integer result = roomService.insertLists(lists);
+        return result > 0 ? R.ok(result) : R.error();
     }
 
 

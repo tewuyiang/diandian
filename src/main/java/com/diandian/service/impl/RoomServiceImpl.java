@@ -201,14 +201,13 @@ public class RoomServiceImpl implements RoomService {
         if (r == null) {
             throw new ParamException("房间信息获取失败！");
         }
-        System.out.println(lists.getRemarkname());
         // 判断房间是否需要审核
         if (r.getChecked() == 1) {
             // 需要审核，则创建一条申请加入房间的消息，不直接加入
-            return messageService.createJoinRoomMsgByNumber(lists.getUserid(),
+            messageService.createJoinRoomMsgByNumber(lists.getUserid(),
                     r.getRoomnumber(), lists.getRemarkname());
+            return 1;
         }
-
 
         // 查询用户创建的所有房间
         // 用户无法加入自己创建的房间
@@ -238,23 +237,20 @@ public class RoomServiceImpl implements RoomService {
         if (l == null) {
             // 数据库中无此记录，直接插入一条新数据到数据库
             num = listsMapper.insertSelective(lists);
-//            System.out.println("插入一条新记录");
         } else {
             // 之前有此数据，则将之前删除的恢复（del变为1，并修改备注）
             l.setRemarkname(lists.getRemarkname());
             l.setDel((short)1);
             num = listsMapper.updateByPrimaryKey(l);
-//            System.out.println("更新原有的记录");
         }
-
         // 加入成功
         if (num > 0) {
             // 房间人数+1
             r.setPersoncount( (short)(r.getPersoncount()+1) );
             roomMapper.updateByPrimaryKeySelective(r);
-//            System.out.println("人数修改成功");
+            return 2;
         }
-        return num;
+        return 0;
     }
 
 

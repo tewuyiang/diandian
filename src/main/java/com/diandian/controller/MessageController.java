@@ -85,7 +85,7 @@ public class MessageController {
                 }
             }
         }
-        return R.ok(messages);
+        return R.ok(messages.size());
     }
 
 }
