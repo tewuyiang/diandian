@@ -252,4 +252,31 @@ public class MessageServiceImpl implements MessageService {
     }
 
 
+    /**
+     * 获取用户未处理的消息
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<MsgtypeCustom> updateAndselectUnDealMessage(Integer userId) throws Exception {
+        if (userId == null) {
+            throw new ParamException();
+        }
+        // 判断是否有此用户
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            throw new ParamException();
+        }
+        List<MsgtypeCustom> messages = msgtypeCustomMapper.selectUnDealMessageByuserId(userId);
+        if (messages != null) {
+            for (MsgtypeCustom message : messages) {
+                // 将消息状态更新为已读
+                message.setIsread(1);
+                msgtypeMapper.updateByPrimaryKey(message);
+            }
+        }
+        return messages;
+    }
+
 }

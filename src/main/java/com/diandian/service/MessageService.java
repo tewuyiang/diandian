@@ -60,4 +60,11 @@ public interface MessageService {
      * @throws Exception
      */
     List<MsgtypeCustom> updateUnreadMessageByUserId(Integer userId) throws Exception;
+
+    /**
+     * 获取用户未处理的消息
+     * @param userId
+     * @return
+     */
+    List<MsgtypeCustom> updateAndselectUnDealMessage(Integer userId) throws Exception;
 }

@@ -42,4 +42,11 @@ public interface MsgtypeCustomMapper {
      */
     @Select("select * from msgtype where receiveuser = #{value} and isread = 0")
     List<MsgtypeCustom> selectUnreadMsgByUserId(Integer userId)throws Exception;
+
+    /**
+     * 获取用户未处理的消息
+     * @param userId
+     * @return
+     */
+    List<MsgtypeCustom> selectUnDealMessageByuserId(Integer userId) throws Exception;
 }

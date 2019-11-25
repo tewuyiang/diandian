@@ -36,6 +36,7 @@ public class MessageController {
 
     /**
      * 获取所有申请加入我的房间的消息
+     *
      * @param userId
      * @return
      */
@@ -52,38 +53,32 @@ public class MessageController {
 
     /**
      * 处理房间申请请求
-     * @param msgId 消息id
+     *
+     * @param msgId  消息id
      * @param result 处理结果
      * @throws Exception
      */
     @ResponseBody
     @PostMapping("/dealRoomapplyMessage")
-    public R dealRoomapplyMessage(Integer msgId, Integer result)throws Exception {
-        return messageService.updateAfterDealRoomapply(msgId,result) > 0 ? R.ok() : R.error();
+    public R dealRoomapplyMessage(Integer msgId, Integer result) throws Exception {
+        return messageService.updateAfterDealRoomapply(msgId, result) > 0 ? R.ok() : R.error();
     }
 
 
     /**
      * 接收消息
+     *
      * @return
      * @throws Exception
      */
     @ResponseBody
     @GetMapping("/receiveMessage/{userId}")
-    public R receiveMessage(@PathVariable("userId") Integer userId)throws Exception {
+    public R receiveMessage(@PathVariable("userId") Integer userId) throws Exception {
         List<MsgtypeCustom> messages;
-        // 加上对象所，防止多个请求同时进行
-        synchronized (this) {
-            // 简单长轮询
-            while (true) {
-                messages = messageService.updateUnreadMessageByUserId(userId);
-                if (messages == null || messages.size() <= 0) {
-                    // 若无新消息，则线程休眠5秒后，再次查询，直到有消息
-                    Thread.sleep(3000);
-                } else {
-                    break;
-                }
-            }
+        // 查询用户未读消息
+        messages = messageService.updateAndselectUnDealMessage(userId);
+        if (messages == null || messages.size() <= 0) {
+            return R.no();
         }
         return R.ok(messages.size());
     }

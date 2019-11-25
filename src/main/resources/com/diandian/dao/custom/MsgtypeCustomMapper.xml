@@ -3,7 +3,7 @@
 <mapper namespace="com.diandian.dao.custom.MsgtypeCustomMapper">
 
     <select id="selectMsgAndRoomApplyByThreeId" parameterType="Integer"
-			resultMap="selectMsgAndRoomApplyMap">
+            resultMap="selectMsgAndRoomApplyMap">
         select msgtype.*,
 			 roomapply.roomid,
 			 roomapply.id roomapplyid,
@@ -20,8 +20,8 @@
 			roomapply.typeid = msgtype.id and
 			roomapply.roomid = room.id
     </select>
-	<select id="selectApplyRoomsByUserId" parameterType="Integer"
-			resultMap="selectMsgAndRoomApplyMap">
+    <select id="selectApplyRoomsByUserId" parameterType="Integer"
+            resultMap="selectMsgAndRoomApplyMap">
 		select msgtype.*,
 			 roomapply.roomid,
 			 roomapply.id roomapplyid,
@@ -36,22 +36,55 @@
 			roomapply.typeid = msgtype.id and
 			roomapply.roomid = room.id
 	</select>
-	<resultMap id="selectMsgAndRoomApplyMap" type="MsgtypeCustom">
+    <resultMap id="selectMsgAndRoomApplyMap" type="MsgtypeCustom">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="sendtime" column="sendtime"/>
+        <result property="senduser" column="senduser"/>
+        <result property="receiveuser" column="receiveuser"/>
+        <result property="isread" column="isread"/>
+        <association property="roomapply" javaType="roomapplyCustom">
+            <id property="id" column="roomapplyid"/>
+            <result property="roomid" column="roomid"/>
+            <result property="dealtime" column="dealtime"/>
+            <result property="dealresult" column="dealresult"/>
+            <result property="typeid" column="id"/>
+            <result property="remarks" column="remarks"/>
+            <result property="rname" column="rname"/>
+            <result property="roomnumber" column="roomnumber"/>
+        </association>
+    </resultMap>
+
+    <select id="selectUnDealMessageByuserId" resultMap="selectUnDealMessageByuserIdMap"
+			parameterType="Integer">
+		SELECT
+			msgtype.*,
+			roomapply.id roomapplyId,
+			roomapply.roomid,
+			roomapply.dealresult,
+			roomapply.dealtime,
+			roomapply.remarks
+		FROM
+			msgtype,
+			roomapply
+		WHERE
+			roomapply.dealtime IS NULL
+			AND msgtype.receiveuser = #{value }
+			AND roomapply.typeid = msgtype.id
+	</select>
+	<resultMap id="selectUnDealMessageByuserIdMap" type="MsgtypeCustom">
 		<id property="id" column="id"/>
-		<result property="type" column="type" />
-		<result property="sendtime" column="sendtime" />
-		<result property="senduser" column="senduser" />
-		<result property="receiveuser" column="receiveuser" />
-		<result property="isread" column="isread" />
+		<result property="type" column="type"/>
+		<result property="sendtime" column="sendtime"/>
+		<result property="senduser" column="senduser"/>
+		<result property="receiveuser" column="receiveuser"/>
+		<result property="isread" column="isread"/>
 		<association property="roomapply" javaType="roomapplyCustom">
 			<id property="id" column="roomapplyid"/>
-			<result property="roomid" column="roomid" />
-			<result property="dealtime" column="dealtime" />
-			<result property="dealresult" column="dealresult" />
-			<result property="typeid" column="id" />
-			<result property="remarks" column="remarks" />
-            <result property="rname" column="rname" />
-            <result property="roomnumber" column="roomnumber" />
+			<result property="roomid" column="roomid"/>
+			<result property="dealtime" column="dealtime"/>
+			<result property="dealresult" column="dealresult"/>
+			<result property="remarks" column="remarks"/>
 		</association>
 	</resultMap>
 

@@ -54,7 +54,7 @@ public class TeacherCheck {
     // 房间的考勤距离
     private Double distance;
     // 教师设置的迟到时间,默认5分钟
-    private Integer lateTime = 5;
+    private Integer lateTime = Integer.MAX_VALUE;
     // 存储教师当前的位置信息
     private MapPoint teacherLocation;
 
@@ -125,7 +125,7 @@ public class TeacherCheck {
                 // 获取设置的迟到范围,单位为分钟
                 Integer lateT = jsonObject.getInteger("lateTime");
                 // 默认为5分钟
-                lateTime = (lateT == null ? 5 : lateT);
+                lateTime = (lateT == null ? Integer.MAX_VALUE : lateT);
 
                 // 判断此房间能否成功开始考勤
                 // 并向客户端发送相应的反馈
@@ -258,8 +258,8 @@ public class TeacherCheck {
         Double latitude = location.getDouble("latitude");
         Double longitude = location.getDouble("longitude");
 
-//        System.out.println("教师号：" + teacherId + "房间号:" + roomId +
-//                ",获取到教师位置，经度：" + latitude + "\t 纬度：" + longitude);
+        System.out.println("教师号：" + teacherId + "房间号:" + roomId +
+                ",获取到教师位置，经度：" + latitude + "\t 纬度：" + longitude);
 
         // 位置信息获取异常，提示错误信息
         if (latitude == null || longitude == null) {

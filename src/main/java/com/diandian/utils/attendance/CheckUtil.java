@@ -42,12 +42,12 @@ public class CheckUtil {
 	}
 
 	public static void main(String[] args) {
-		double v1 = distanceOf(new MapPoint(28.68202, 115.85794),
-				new MapPoint(28.753306, 115.861918));
+		double v1 = distanceOf(new MapPoint(28.74981716579861, 115.86832980685764),
+				new MapPoint(28.74991916232639, 115.86700656467013));
 		System.out.println(v1);
 
-		double distance = getDistance(28.68202, 115.85794,
-                28.753306, 115.861918);
+		double distance = getDistance(28.74981716579861, 115.86832980685764,
+				28.74991916232639, 115.86700656467013);
 		System.out.println("距离" + distance  + "米");
 	}
 }
