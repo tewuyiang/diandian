@@ -1,5 +1,8 @@
 package com.diandian.controller.attendance.single;
 
+import com.diandian.utils.DateTimeUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -16,8 +19,6 @@ public class StudentData {
     public StudentData(Integer studentId) {
         this.studentId = studentId;
     }
-
-
 
     public short getStatus() {
         return status;
@@ -50,5 +51,11 @@ public class StudentData {
                 ", attTime=" + attTime +
                 ", status=" + status +
                 '}';
+    }
+
+    public static void main(String[] args) {
+        StudentData studentData = new StudentData(1);
+        studentData.setAttTime(new Date());
+        System.out.println(DateTimeUtil.datetimeToString(studentData.getAttTime()));
     }
 }

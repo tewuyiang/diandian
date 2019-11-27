@@ -1,5 +1,7 @@
 package com.diandian.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Room {
@@ -11,6 +13,7 @@ public class Room {
 
     private Integer userid;
 
+    @JsonFormat(pattern = "yy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createtime;
 
     private Short personcount;

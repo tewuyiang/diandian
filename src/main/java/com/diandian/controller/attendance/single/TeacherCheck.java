@@ -12,6 +12,7 @@ import com.diandian.service.RoomService;
 import com.diandian.service.RoomdetailService;
 import com.diandian.service.SingledetailService;
 import com.diandian.service.StatisticsService;
+import com.diandian.utils.DateTimeUtil;
 import com.diandian.utils.attendance.MapPoint;
 import com.diandian.utils.attendance.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -311,7 +312,15 @@ public class TeacherCheck {
             }
             // 更新用户状态
             studentData.setStatus(status);
-            studentData.setAttTime(new Date());
+            if (status == AttConstant.ABSENTEE) {
+                // 若修改为旷课，则将签到时间置空
+                studentData.setAttTime(null);
+            } else {
+                // 若修改为其他时间，则将签到时间更新为当前时间
+                studentData.setAttTime(new Date());
+            }
+            // 将签到时间封装到数据中
+            message.put("attTime", DateTimeUtil.datetimeToString(studentData.getAttTime()));
             message = MessageUtils.messageToJson(AttConstant.STATUS,
                     AttConstant.SUCCESS, status, studentId);
         } finally {

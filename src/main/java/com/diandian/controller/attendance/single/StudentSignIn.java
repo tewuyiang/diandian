@@ -2,6 +2,7 @@ package com.diandian.controller.attendance.single;
 
 import com.alibaba.fastjson.JSONObject;
 import com.diandian.constants.AttConstant;
+import com.diandian.utils.DateTimeUtil;
 import com.diandian.utils.attendance.CheckUtil;
 import com.diandian.utils.attendance.MapPoint;
 import com.diandian.utils.attendance.MessageUtils;
@@ -124,6 +125,8 @@ public class StudentSignIn {
             }
             // 修改用户的签到时间
             studentData.setAttTime(new Date());
+            // 将签到时间封装到数据中
+            message.put("attTime", DateTimeUtil.datetimeToString(studentData.getAttTime()));
             // 签到成功，需要向教师发送成功信息
             teacherCheck.sendMessage(message.toJSONString());
         } else {
