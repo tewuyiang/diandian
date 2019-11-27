@@ -186,6 +186,7 @@ public class TeacherCheck {
      * 判断房间能否成功开始考勤
      * 若成功开始，则记录相应的数据
      * 并向客户端反馈结果
+     *
      * @param id 房间id
      */
     private void judgeStart(Integer id) {
@@ -312,13 +313,7 @@ public class TeacherCheck {
             }
             // 更新用户状态
             studentData.setStatus(status);
-            if (status == AttConstant.ABSENTEE) {
-                // 若修改为旷课，则将签到时间置空
-                studentData.setAttTime(null);
-            } else {
-                // 若修改为其他时间，则将签到时间更新为当前时间
-                studentData.setAttTime(new Date());
-            }
+            studentData.setAttTime(new Date());
             // 将签到时间封装到数据中
             message.put("attTime", DateTimeUtil.datetimeToString(studentData.getAttTime()));
             message = MessageUtils.messageToJson(AttConstant.STATUS,
@@ -389,6 +384,7 @@ public class TeacherCheck {
 
     /**
      * 修改学生考勤统计情况
+     *
      * @param statistics
      */
     @SuppressWarnings("all")
