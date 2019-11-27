@@ -314,10 +314,10 @@ public class TeacherCheck {
             // 更新用户状态
             studentData.setStatus(status);
             studentData.setAttTime(new Date());
-            // 将签到时间封装到数据中
-            message.put("attTime", DateTimeUtil.datetimeToString(studentData.getAttTime()));
             message = MessageUtils.messageToJson(AttConstant.STATUS,
                     AttConstant.SUCCESS, status, studentId);
+            // 将签到时间封装到数据中
+            message.put("attTime", DateTimeUtil.datetimeToString(studentData.getAttTime()));
         } finally {
             // 向教师客户端回送消息
             sendMessage(message.toJSONString());
