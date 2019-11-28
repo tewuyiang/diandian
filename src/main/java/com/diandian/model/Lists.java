@@ -50,4 +50,15 @@ public class Lists {
     public void setDel(Short del) {
         this.del = del;
     }
+
+    @Override
+    public String toString() {
+        return "Lists{" +
+                "id=" + id +
+                ", roomid=" + roomid +
+                ", userid=" + userid +
+                ", remarkname='" + remarkname + '\'' +
+                ", del=" + del +
+                '}';
+    }
 }

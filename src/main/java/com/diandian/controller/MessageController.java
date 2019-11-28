@@ -29,6 +29,8 @@ public class MessageController {
     public R applyJoinRoomByNumber(@PathVariable("userId") Integer userId,
                                    @PathVariable("number") String number,
                                    @PathVariable("remarkname") String remarks) throws Exception {
+        System.out.println(remarks);
+        System.out.println("武器");
         return messageService.createJoinRoomMsgByNumber(userId, number, remarks) > 0 ?
                 R.ok() : R.error("发生异常");
     }

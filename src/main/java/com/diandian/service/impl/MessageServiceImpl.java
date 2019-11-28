@@ -69,15 +69,14 @@ public class MessageServiceImpl implements MessageService {
             if (r.getId() == room.getId())
                 throw new DataOperateException("您已在房间中！");
         }
-
+        if ("".equals(remarks)) {
+            remarks = null;
+        }
         // 查询是否已经有这条消息，若有，则不新增，而是将消息设置为未读
         Msgtype msg = msgtypeCustomMapper.selectMsgAndRoomApplyByThreeId(userId, room.getUserid(), room.getId());
         if (msg != null) {
             // 若已有这条记录，则直接修改原来的记录，不新增记录
             Roomapply roomapply = ((MsgtypeCustom)msg).getRoomapply();
-            if ("".equals(remarks)) {
-                remarks = null;
-            }
             // 更新申请加入消息，设置为未处理
             roomapply.setDealresult(null);
             roomapply.setDealtime(null);
@@ -101,6 +100,7 @@ public class MessageServiceImpl implements MessageService {
             Roomapply roomapply = new Roomapply();
             roomapply.setRoomid(room.getId());
             roomapply.setTypeid(msgtype.getId());
+            roomapply.setRemarks(remarks);
             if (roomapplyMapper.insert(roomapply) <= 0) {
                 throw new DataOperateException("更新数据失败！");
             }
@@ -186,6 +186,7 @@ public class MessageServiceImpl implements MessageService {
             throw new ParamException();
         }
         // 获取消息记录
+        System.out.println(msgId);
         Msgtype msg = msgtypeMapper.selectByPrimaryKey(msgId);
         // 消息不存在
         if (msg == null) {
@@ -201,6 +202,9 @@ public class MessageServiceImpl implements MessageService {
 
         // 获取申请消息明细
         Roomapply roomapply = roomapplyCustomMapper.selectByTypeId(msg.getId());
+        if (roomapply == null) {
+            throw new ParamException();
+        }
 
         // 判断处理结果,若处理结果为同意，则将用户加入到房间中，否则不加入
         if (result == 1) {
