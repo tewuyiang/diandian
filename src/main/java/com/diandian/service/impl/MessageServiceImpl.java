@@ -1,19 +1,13 @@
 package com.diandian.service.impl;
 
-import com.diandian.dao.ListsMapper;
-import com.diandian.dao.MsgtypeMapper;
-import com.diandian.dao.RoomapplyMapper;
-import com.diandian.dao.UserMapper;
+import com.diandian.dao.*;
 import com.diandian.dao.custom.MsgtypeCustomMapper;
 import com.diandian.dao.custom.RoomCustomMapper;
 import com.diandian.dao.custom.RoomapplyCustomMapper;
 import com.diandian.dao.custom.UserCustomMapper;
 import com.diandian.exception.DataOperateException;
 import com.diandian.exception.ParamException;
-import com.diandian.model.Lists;
-import com.diandian.model.Msgtype;
-import com.diandian.model.Roomapply;
-import com.diandian.model.User;
+import com.diandian.model.*;
 import com.diandian.model.custom.MsgtypeCustom;
 import com.diandian.model.custom.RoomCustom;
 import com.diandian.service.MessageService;
@@ -30,6 +24,8 @@ public class MessageServiceImpl implements MessageService {
     private UserMapper userMapper;
     @Autowired
     private RoomCustomMapper roomCustomMapper;
+    @Autowired
+    private RoomMapper roomMapper;
     @Autowired
     private MsgtypeMapper msgtypeMapper;
     @Autowired
@@ -57,22 +53,22 @@ public class MessageServiceImpl implements MessageService {
         // 查询房间是否存在
         RoomCustom room = roomCustomMapper.selectRoomByRoomNumber(number);
         if (room == null) {
-            throw new ParamException("房间不存在！");
+            throw new ParamException("房间不存在");
         }
         // 特判用户不能加入自己的房间
         if (room.getUserid() == userId) {
-            throw new DataOperateException("无法加入自己的房间！");
+            throw new DataOperateException("这是您的房间");
         }
         // 特判用户是否已经在房间中
         List<RoomCustom> rooms2 = userCustomMapper.selectJoinRoomsByUserId(userId);
         for (RoomCustom r : rooms2) {
             if (r.getId() == room.getId())
-                throw new DataOperateException("您已在房间中！");
+                throw new DataOperateException("您已在房间中");
         }
         if ("".equals(remarks)) {
             remarks = null;
         }
-        // 查询是否已经有这条消息，若有，则不新增，而是将消息设置为未读
+        // 查询是否已经有这条消息，若有，且未处理过，则不新增，而是将消息设置为未读
         Msgtype msg = msgtypeCustomMapper.selectMsgAndRoomApplyByThreeId(userId, room.getUserid(), room.getId());
         if (msg != null) {
             // 若已有这条记录，则直接修改原来的记录，不新增记录
@@ -94,7 +90,7 @@ public class MessageServiceImpl implements MessageService {
             msgtype.setType(1); // 1表示申请加入房间的消息
             msgtype.setSenduser(userId);
             if (insertMessageType(msgtype) <= 0) {
-                throw new DataOperateException("更新数据失败！");
+                throw new DataOperateException("更新数据失败");
             }
             // 生成申请加入房间的详细记录
             Roomapply roomapply = new Roomapply();
@@ -102,7 +98,7 @@ public class MessageServiceImpl implements MessageService {
             roomapply.setTypeid(msgtype.getId());
             roomapply.setRemarks(remarks);
             if (roomapplyMapper.insert(roomapply) <= 0) {
-                throw new DataOperateException("更新数据失败！");
+                throw new DataOperateException("更新数据失败");
             }
         }
         return 1;
@@ -215,6 +211,11 @@ public class MessageServiceImpl implements MessageService {
             lists.setUserid(msg.getSenduser());
             lists.setDel((short)1);
             listsMapper.insert(lists);
+
+            // 更新房间人数,房间人数+1
+            Room room = roomMapper.selectByPrimaryKey(roomapply.getRoomid());
+            room.setPersoncount( (short)(room.getPersoncount() + 1) );
+            roomMapper.updateByPrimaryKey(room);
         }
 
         // 修改明细情况
@@ -281,6 +282,30 @@ public class MessageServiceImpl implements MessageService {
             }
         }
         return messages;
+    }
+
+
+    /**
+     * 删除某个房间的房间申请消息
+     * @param roomId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer deleteRoomApplyMessageByRoomId(Integer roomId) throws Exception {
+        if (roomId == null) {
+            throw new ParamException();
+        }
+        // 查询所有房间申请
+        List<Roomapply> roomapplies = roomapplyCustomMapper.selectByRoomId(roomId);
+        // 删除相应的msgtype表记录
+        if (roomapplies != null) {
+            for (Roomapply roomapply : roomapplies) {
+                msgtypeMapper.deleteByPrimaryKey(roomapply.getTypeid());
+            }
+        }
+        // 删除roomapply记录
+        return roomapplyCustomMapper.deleteByRoomId(roomId);
     }
 
 }

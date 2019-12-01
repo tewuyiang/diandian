@@ -23,4 +23,13 @@ public interface RoomdetailService {
      * @return
      */
     List<RoomdetailCustom> selectRoomdetailByRoomId(Integer roomId) throws Exception;
+
+
+    /**
+     * 通过房间id删除房间考勤明细
+     * @param roomId
+     * @return
+     * @throws Exception
+     */
+    Integer deleteRoomdetailByRoomId(Integer roomId) throws Exception;
 }

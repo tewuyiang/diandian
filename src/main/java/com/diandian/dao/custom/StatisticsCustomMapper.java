@@ -2,6 +2,7 @@ package com.diandian.dao.custom;
 
 import com.diandian.model.Statistics;
 import com.diandian.model.custom.StatisticsCustom;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -28,4 +29,13 @@ public interface StatisticsCustomMapper {
     Statistics selectByRoomIdAndUserId(@Param("roomId") Integer roomId,
                                        @Param("userId") Integer userId) throws Exception;
 
+
+    /**
+     * 根据房间id删除考勤统计情况
+     * @param roomId
+     * @return
+     * @throws Exception
+     */
+    @Delete("DELETE FROM statistics WHERE roomid=#{roomId}")
+    Integer deleteByRoomId(Integer roomId) throws Exception;
 }

@@ -44,7 +44,7 @@ public class RoomController {
     public R getRoomById(@PathVariable("roomId") Integer roomId) throws Exception {
         System.out.println("aaa");
         Room room = roomService.selectRoomByRoomId(roomId);
-        return room == null ? R.no("房间不存在！") : R.ok(room);
+        return room == null ? R.no("房间不存在") : R.ok(room);
     }
 
 

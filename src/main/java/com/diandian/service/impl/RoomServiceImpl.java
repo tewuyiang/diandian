@@ -14,6 +14,7 @@ import com.diandian.model.custom.StatisticsCustom;
 import com.diandian.model.custom.UserCustom;
 import com.diandian.service.MessageService;
 import com.diandian.service.RoomService;
+import com.diandian.service.RoomdetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,12 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private StatisticsCustomMapper statisticsCustomMapper;
     @Autowired
+    private SingledetailCustomMapper singledetailCustomMapper;
+
+    @Autowired
     private MessageService messageService;
+    @Autowired
+    private RoomdetailService roomdetailService;
 
     /**
      * 根据房间号查询房间内的所有用户
@@ -160,7 +166,14 @@ public class RoomServiceImpl implements RoomService {
         if (roomId == null) {
             throw new ParamException();
         }
-        return roomCustomMapper.deleteRoomByRoomId(roomId);
+        // 删除房间的考勤记录以及考勤统计情况
+        roomdetailService.deleteRoomdetailByRoomId(roomId);
+        // 删除房间和用户对应记录
+        listsCustomMapper.deleteByRoomId(roomId);
+        // 删除房间对应的申请消息
+        messageService.deleteRoomApplyMessageByRoomId(roomId);
+        // 删除房间
+        return roomMapper.deleteByPrimaryKey(roomId);
     }
 
 
@@ -194,12 +207,12 @@ public class RoomServiceImpl implements RoomService {
         // 查询用户是否存在
         User user = userMapper.selectByPrimaryKey(lists.getUserid());
         if (user == null) {
-            throw new ParamException("用户信息获取失败!");
+            throw new ParamException("用户获取失败");
         }
         // 查询用户想要加入的房间是否存在
         RoomCustom r = roomCustomMapper.selectRoomById(lists.getRoomid());
         if (r == null) {
-            throw new ParamException("房间信息获取失败！");
+            throw new ParamException("房间获取失败");
         }
         // 判断房间是否需要审核
         if (r.getChecked() == 1) {
@@ -214,7 +227,7 @@ public class RoomServiceImpl implements RoomService {
         List<RoomCustom> rooms1 = userCustomMapper.selectRoomsByUserId(lists.getUserid());
         for (RoomCustom room : rooms1) {
             if (room.getId() == lists.getRoomid()) {
-                throw new ParamException("无法加入自己的房间");
+                throw new ParamException("这是您的房间");
             }
         }
         // 查询用户已经加入的所有房间
@@ -222,7 +235,7 @@ public class RoomServiceImpl implements RoomService {
         List<RoomCustom> rooms2 = userCustomMapper.selectJoinRoomsByUserId(lists.getUserid());
         for (RoomCustom room : rooms2) {
             if (room.getId() == lists.getRoomid()) {
-                throw new ParamException("您已在该房间中！");
+                throw new ParamException("您已在房间中");
             }
         }
         // 封装数据

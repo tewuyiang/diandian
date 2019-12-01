@@ -46,7 +46,7 @@ public class StudentSignIn {
         // 判断参数是否正确接受
         if (roomId == null || studentId == null || latitude == null || longitude == null) {
             message = MessageUtils.messageToJson(AttConstant.STATUS,
-                    AttConstant.FAILURE, "信息获取异常！");
+                    AttConstant.FAILURE, "信息获取异常");
             System.out.println("1:信息获取异常");
             return message.toJSONString();
         }
@@ -56,7 +56,7 @@ public class StudentSignIn {
         // 若房间处理对象不存在房间列表中，或者还未获取到老师的位置，表示考勤未开始
         if (teacherCheck == null || teacherCheck.getTeacherLocation() == null) {
             message = MessageUtils.messageToJson(AttConstant.STATUS,
-                    AttConstant.FAILURE, "考勤未开始！");
+                    AttConstant.FAILURE, "考勤未开始");
             System.out.println("2:考勤未开始");
             return message.toJSONString();
         }
@@ -65,7 +65,7 @@ public class StudentSignIn {
         StudentData studentData = teacherCheck.getStudentsData().get(studentId);
         if (studentData == null) {
             message = MessageUtils.messageToJson(AttConstant.STATUS,
-                    AttConstant.FAILURE, "您不在此房间中！");
+                    AttConstant.FAILURE, "您不在房间中");
             System.out.println("3:您不在此房间中");
             return message.toJSONString();
         }
@@ -106,8 +106,8 @@ public class StudentSignIn {
             // 实际距离小于签到距离，则再判断是否迟到
             // 获取当前时间与开始考勤时间的毫秒差值
             long chaTime = new Date().getTime() - teacherCheck.getBeginTime().getTime();
-            long lateTime = teacherCheck.getLateTime() * 60 * 1000;
-
+            long lateTime = teacherCheck.getLateTime() * 60L * 1000L;
+            System.out.println("签到离开始时间:" + chaTime + " lateTime:" + lateTime);
             // 若签到时间与开始时间的差值，小于设置的迟到时间
             // 表示未迟到，则记录状态为到达，否则记为迟到
             if (chaTime < lateTime) {
@@ -133,7 +133,7 @@ public class StudentSignIn {
             // 若实际距离大于签到距离，表示在考勤距离外
             // 则无法成功签到，返回提示信息
             message = MessageUtils.messageToJson(AttConstant.STATUS,
-                    AttConstant.FAILURE, "您不在考勤距离内,请重试！", studentData.getStudentId());
+                    AttConstant.FAILURE, "不在考勤距离内", studentData.getStudentId());
             System.out.println("7:不在距离内");
         }
         return message.toJSONString();

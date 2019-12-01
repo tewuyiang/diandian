@@ -1,6 +1,7 @@
 package com.diandian.dao.custom;
 
 import com.diandian.model.custom.SingledetailCustom;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,4 +26,13 @@ public interface SingledetailCustomMapper {
      * @throws Exception
      */
     List<SingledetailCustom> selectOnStudentDetails(@Param("roomId")Integer roomId, @Param("userId")Integer userId)throws Exception;
+
+    /**
+     * 根据房间考勤明细号删除个人明细
+     * @param roomdetailId
+     * @return
+     * @throws Exception
+     */
+    @Delete("DELETE FROM singledetail WHERE roomdetailid=#{roomdetailId}")
+    Integer deleteByRoomdetailId(Integer roomdetailId) throws Exception;
 }

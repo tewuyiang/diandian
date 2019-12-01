@@ -67,4 +67,13 @@ public interface MessageService {
      * @return
      */
     List<MsgtypeCustom> updateAndselectUnDealMessage(Integer userId) throws Exception;
+
+
+    /**
+     * 删除某个房间的房间申请消息
+     * @param roomId
+     * @return
+     * @throws Exception
+     */
+    Integer deleteRoomApplyMessageByRoomId(Integer roomId)throws Exception;
 }

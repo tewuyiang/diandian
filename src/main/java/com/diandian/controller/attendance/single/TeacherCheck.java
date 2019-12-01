@@ -18,16 +18,10 @@ import com.diandian.utils.attendance.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.server.standard.SpringConfigurator;
 
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -58,6 +52,10 @@ public class TeacherCheck {
     private Integer lateTime = Integer.MAX_VALUE;
     // 存储教师当前的位置信息
     private MapPoint teacherLocation;
+    // 记录最后一次获取位置信息的时间
+    private long lastLocaTime;
+    // 定时器检测客户端是否断开
+    private Timer timer;
 
     /*---------以下是操作数据库的业务逻辑类的对象------------*/
     @Autowired
@@ -135,7 +133,7 @@ public class TeacherCheck {
             } else {
                 // 房间号未正常获取到
                 JSONObject response = MessageUtils.messageToJson(AttConstant.START,
-                        AttConstant.FAILURE, "房间信息获取失败，请重试！");
+                        AttConstant.FAILURE, "信息获取失败");
                 sendMessage(response.toJSONString());
             }
 
@@ -177,6 +175,9 @@ public class TeacherCheck {
             studentsData.clear();
             // 移除考勤房间列表
             roomMap.remove(roomId);
+            // 关闭定时调用函数
+            timer.cancel();
+            timer.purge();
         }
         System.out.println("客户端断开连接" + roomId);
     }
@@ -197,7 +198,7 @@ public class TeacherCheck {
             // 若存在，则此房间上一次考勤未退出，用户重复开始考勤
             if (roomMap.get(id) != null) {
                 MessageUtils.messageToJson(AttConstant.START, AttConstant.FAILURE,
-                        "上次考勤未关闭！");
+                        "上次考勤未关闭");
                 return;
             }
             // 查询数据库中的房间信息
@@ -205,13 +206,13 @@ public class TeacherCheck {
             // 若房间不存在，发送反馈信息
             if (room == null) {
                 message = MessageUtils.messageToJson(AttConstant.START,
-                        AttConstant.FAILURE, "房间信息获取失败！");
+                        AttConstant.FAILURE, "信息获取失败");
                 return;
             }
             // 判断房间人数，若房间人数为0，则不允许开始考勤
             if (room.getPersoncount() <= 0) {
                 message = MessageUtils.messageToJson(AttConstant.START,
-                        AttConstant.FAILURE, "房间人数为0，无法开始考勤！");
+                        AttConstant.FAILURE, "房间人数为0");
                 return;
             }
             // 获取房间中所有学生的信息
@@ -233,6 +234,27 @@ public class TeacherCheck {
             // 将当前房间加入房间总集中
             roomMap.put(id, this);
 
+            // 开启定时检测客户端是否异常断开
+            this.lastLocaTime = System.currentTimeMillis(); // 当前最后一次接收到位置信息的时间就是开始时间
+            timer = new Timer();
+            // 绑定定时调用函数，每隔15秒检测一次客户端死否断开
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    long chaTime = System.currentTimeMillis() - lastLocaTime;
+                    System.out.println("定时器正常运行");
+                    // 若超过15秒，表示用户网络断开，服务器释放socket连接
+                    if (chaTime > 15*1000) {
+                        try {
+                            System.out.println("客户端异常断开");
+                            teacherSession.close();
+                        } catch (IOException e) {
+//                            e.printStackTrace();
+                        }
+                    }
+                }
+            }, 0, 1000*15);
+
             // 封装成功开始的回送数据
             message = MessageUtils.messageToJson(AttConstant.START,
                     AttConstant.SUCCESS, studentsInfo);
@@ -242,7 +264,7 @@ public class TeacherCheck {
             e.printStackTrace();
             // 回送异常数据
             message = MessageUtils.messageToJson(AttConstant.START,
-                    AttConstant.FAILURE, "无法获取房间信息!");
+                    AttConstant.FAILURE, "获取信息失败");
         } finally {
             // 回送消息到客户端
             sendMessage(message.toJSONString());
@@ -263,10 +285,13 @@ public class TeacherCheck {
         System.out.println("教师号：" + teacherId + "房间号:" + roomId +
                 ",获取到教师位置，经度：" + latitude + "\t 纬度：" + longitude);
 
+        // 更新上一次最晚时间
+        lastLocaTime = System.currentTimeMillis();
+
         // 位置信息获取异常，提示错误信息
         if (latitude == null || longitude == null) {
             JSONObject message = MessageUtils.messageToJson(AttConstant.LOCATION,
-                    AttConstant.FAILURE, "位置信息获取异常");
+                    AttConstant.FAILURE, "位置信息异常");
             sendMessage(message.toJSONString());
             return;
         }
@@ -278,6 +303,7 @@ public class TeacherCheck {
             teacherLocation.setLatitude(latitude);
             teacherLocation.setLongitude(longitude);
         }
+
 //        System.out.println(teacherLocation);
     }
 
@@ -294,7 +320,7 @@ public class TeacherCheck {
         try {
             if (status == null || studentId == null) {
                 message = MessageUtils.messageToJson(AttConstant.STATUS,
-                        AttConstant.FAILURE, "信息获取异常！", studentId);
+                        AttConstant.FAILURE, "信息获取异常", studentId);
                 return;
             }
             // 获取学生信息
@@ -302,13 +328,13 @@ public class TeacherCheck {
             // 学生不存在
             if (studentData == null) {
                 message = MessageUtils.messageToJson(AttConstant.STATUS,
-                        AttConstant.FAILURE, "学生信息异常！", studentId);
+                        AttConstant.FAILURE, "学生信息异常", studentId);
                 return;
             }
             // 状态信息有误
             if (status < 0 || status > 4) {
                 message = MessageUtils.messageToJson(AttConstant.STATUS,
-                        AttConstant.FAILURE, "状态信息异常！", studentId);
+                        AttConstant.FAILURE, "状态信息异常", studentId);
                 return;
             }
             // 更新用户状态
@@ -419,5 +445,6 @@ public class TeacherCheck {
             e.printStackTrace();
         }
     }
+
 
 }

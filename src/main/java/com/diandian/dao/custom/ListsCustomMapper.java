@@ -2,6 +2,7 @@ package com.diandian.dao.custom;
 
 import com.diandian.model.Lists;
 import com.diandian.model.custom.UserCustom;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -37,4 +38,7 @@ public interface ListsCustomMapper {
      */
     @Update("update lists set del = 0 where roomid = #{roomId} and userid = #{userId}")
     Integer updateListToDelete(@Param("roomId") Integer roomId, @Param("userId") Integer userId);
+
+    @Delete("DELETE FROM lists WHERE roomid=#{roomId}")
+    Integer deleteByRoomId(Integer roomId) throws Exception;
 }

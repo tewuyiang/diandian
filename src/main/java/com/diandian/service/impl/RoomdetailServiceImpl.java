@@ -4,6 +4,8 @@ import com.diandian.dao.RoomMapper;
 import com.diandian.dao.RoomdetailMapper;
 import com.diandian.dao.custom.RoomCustomMapper;
 import com.diandian.dao.custom.RoomdetailCustomMapper;
+import com.diandian.dao.custom.SingledetailCustomMapper;
+import com.diandian.dao.custom.StatisticsCustomMapper;
 import com.diandian.exception.ParamException;
 import com.diandian.model.Roomdetail;
 import com.diandian.model.custom.RoomCustom;
@@ -25,6 +27,10 @@ public class RoomdetailServiceImpl implements RoomdetailService {
     private RoomMapper roomMapper;
     @Autowired
     private RoomCustomMapper roomCustomMapper;
+    @Autowired
+    private SingledetailCustomMapper singledetailCustomMapper;
+    @Autowired
+    private StatisticsCustomMapper statisticsCustomMapper;
 
 
     /**
@@ -58,4 +64,31 @@ public class RoomdetailServiceImpl implements RoomdetailService {
         }
         return roomdetailCustomMapper.selectRoomdetailByRoomId(roomId);
     }
+
+
+    /**
+     * 通过房间id删除房间考勤明细
+     * @param roomId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer deleteRoomdetailByRoomId(Integer roomId) throws Exception {
+        if (roomId == null) {
+            throw new ParamException();
+        }
+        // 删除房间中的所有个人明细
+        List<RoomdetailCustom> roomdetails = roomdetailCustomMapper.selectRoomdetailByRoomId(roomId);
+        if (roomdetails != null) {
+            for (RoomdetailCustom roomdetail : roomdetails) {
+                singledetailCustomMapper.deleteByRoomdetailId(roomdetail.getId());
+            }
+        }
+        // 删除房间内每个用户的统计情况
+        statisticsCustomMapper.deleteByRoomId(roomId);
+        // 删除房间中的所有考勤记录
+        return roomdetailCustomMapper.deleteByRoomId(roomId);
+    }
+
+
 }
