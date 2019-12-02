@@ -114,7 +114,12 @@ public class RoomController {
     public R userJoinRoom(Lists lists) throws Exception{
         System.out.println(lists);
         Integer result = roomService.insertLists(lists);
-        return result > 0 ? R.ok(result) : R.error();
+        if (result == 1) {
+            return R.ok("等待审核");
+        } else if (result == 2) {
+            return R.ok("加入成功");
+        }
+        return R.error();
     }
 
 

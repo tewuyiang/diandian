@@ -11,7 +11,7 @@ public class Singledetail {
 
     private Integer userid;
 
-    @JsonFormat(pattern = "yy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yy-MM-dd HH:mm", timezone = "GMT+8")
     private Date attendtime;
 
     private Short attendstatus;

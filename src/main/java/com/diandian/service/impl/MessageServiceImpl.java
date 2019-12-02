@@ -1,10 +1,7 @@
 package com.diandian.service.impl;
 
 import com.diandian.dao.*;
-import com.diandian.dao.custom.MsgtypeCustomMapper;
-import com.diandian.dao.custom.RoomCustomMapper;
-import com.diandian.dao.custom.RoomapplyCustomMapper;
-import com.diandian.dao.custom.UserCustomMapper;
+import com.diandian.dao.custom.*;
 import com.diandian.exception.DataOperateException;
 import com.diandian.exception.ParamException;
 import com.diandian.model.*;
@@ -38,6 +35,8 @@ public class MessageServiceImpl implements MessageService {
     private UserCustomMapper userCustomMapper;
     @Autowired
     private ListsMapper listsMapper;
+    @Autowired
+    private ListsCustomMapper listsCustomMapper;
 
     /**
      * 申请加入房间，根据房间number
@@ -181,8 +180,8 @@ public class MessageServiceImpl implements MessageService {
         if (msgId == null || result == null || result < 1 || result > 2) {
             throw new ParamException();
         }
+//        System.out.println(msgId);
         // 获取消息记录
-        System.out.println(msgId);
         Msgtype msg = msgtypeMapper.selectByPrimaryKey(msgId);
         // 消息不存在
         if (msg == null) {
@@ -204,6 +203,12 @@ public class MessageServiceImpl implements MessageService {
 
         // 判断处理结果,若处理结果为同意，则将用户加入到房间中，否则不加入
         if (result == 1) {
+            // 特判用户之前是否加入过，若之前加入过,但是被删除，则此处将残留的记录删除
+            Lists l = listsCustomMapper.selectByRoomIdAndUserId(roomapply.getRoomid(), msg.getSenduser());
+            if (l != null) {
+                listsMapper.deleteByPrimaryKey(l.getId());
+            }
+
             // 同意用户加入房间，生成lists表记录
             Lists lists = new Lists();
             lists.setRoomid(roomapply.getRoomid());

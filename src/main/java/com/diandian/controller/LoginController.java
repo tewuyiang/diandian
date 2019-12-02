@@ -21,13 +21,15 @@ public class LoginController {
      * 登录请求
      *
      * @param nickName 昵称
-     * @param code     动态参数
+     * @param code 解析wxid的密匙
+     * @param sex 性别
      * @return openid、session_key 的map
      * @throws Exception
      */
     @ResponseBody
-    @GetMapping("/login/{nickName}/{code}")
+    @GetMapping("/login/{nickName}/{code}/{sex}")
     public Map<String, Object> login(@PathVariable("nickName") String nickName,
+                                     @PathVariable("sex") Short sex,
                                      @PathVariable("code") String code,
                                      HttpSession session) throws Exception {
         Map<Object, Object> map;
@@ -46,6 +48,7 @@ public class LoginController {
             user = new UserCustom();
             user.setNickname(nickName);
             user.setWxid(openid);
+            user.setSex(sex);
 
             userService.insertUser(user);
             System.out.println("插入用户id:" + user.getId());
